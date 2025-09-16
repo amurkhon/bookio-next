@@ -1,20 +1,55 @@
 import React from 'react';
-import { Stack, Box, Divider, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { REACT_APP_API_URL, topPropertyRank } from '../../config';
 import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+
+import Rating from '@mui/material/Rating';
+import Box from '@mui/joy/Box';
+
+
+const property = {
+		_id: "bwfdg436frg4538888888888888879",
+		propertyStatus: "ACTIVE",
+		propertyCategory: "Fiction",
+		propertyTitle: "Cold Island",
+		propertyAuthor: "Amurkhon Akramjonov",
+		propertyPrice: 17,
+		propertyPages: 239,
+		isbn: "978-1662530388",
+		propertyViews: 0,
+		propertyLikes: 0,
+		propertyComments: 0,
+		propertyRank: 0,
+		propertyDownloads: 0,
+		propertyLanguages: [
+			"Eng",
+			"Kor"
+		],
+		propertyImages: [],
+		propertyFile: "",
+		propertyAudio: "",
+		memberId: {
+			$oid: "68be50c5cd93b2dc035b1434"
+		},
+		publicationDate: {
+			$date: "2025-09-01T00:00:00.000Z"
+		},
+		createdAt: {
+			$date: "2025-09-10T06:12:06.508Z"
+		},
+		updatedAt: {
+			date: "2025-09-10T07:30:35.064Z"
+		},
+	}
 
 interface PopularPropertyCardProps {
 	property: Property;
 }
 
-const PopularPropertyCard = (props: PopularPropertyCardProps) => {
-	const { property } = props;
+const PopularPropertyCard = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -26,106 +61,40 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 	};
 
 	if (device === 'mobile') {
-		return (
-			<Stack className="popular-card-box">
-				<Box
-					component={'div'}
-					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property?._id)}}
-				>
-					{property && property?.propertyRank >= topPropertyRank ? (
-						<div className={'status'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<span>top</span>
-						</div>
-					) : (
-						''
-					)}
-
-					<div className={'price'}>${property.propertyPrice}</div>
-				</Box>
-				<Box component={'div'} className={'info'}>
-					<strong className={'title'} onClick={() => {pushDetailHandler(property?._id)}}>{property.propertyTitle}</strong>
-					<p className={'desc'}>{property.propertyAddress}</p>
-					<div className={'options'}>
-						<div>
-							<img src="/img/icons/bed.svg" alt="" />
-							<span>{property?.propertyBeds} bed</span>
-						</div>
-						<div>
-							<img src="/img/icons/room.svg" alt="" />
-							<span>{property?.propertyRooms} rooms</span>
-						</div>
-						<div>
-							<img src="/img/icons/expand.svg" alt="" />
-							<span>{property?.propertySquare} m2</span>
-						</div>
-					</div>
-					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						<p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
-						</div>
-					</div>
-				</Box>
-			</Stack>
-		);
-	} else {
-		return (
-			<Stack className="popular-card-box">
-				<Box
-					component={'div'}
-					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property?._id)}}
-				>
-					{property && property?.propertyRank >= topPropertyRank ? (
-						<div className={'status'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<span>top</span>
-						</div>
-					) : (
-						''
-					)}
-
-					<div className={'price'}>${property.propertyPrice}</div>
-				</Box>
-				<Box component={'div'} className={'info'}>
-					<strong className={'title'} onClick={() => {pushDetailHandler(property?._id)}}>{property.propertyTitle}</strong>
-					<p className={'desc'}>{property.propertyAddress}</p>
-					<div className={'options'}>
-						<div>
-							<img src="/img/icons/bed.svg" alt="" />
-							<span>{property?.propertyBeds} bed</span>
-						</div>
-						<div>
-							<img src="/img/icons/room.svg" alt="" />
-							<span>{property?.propertyRooms} rooms</span>
-						</div>
-						<div>
-							<img src="/img/icons/expand.svg" alt="" />
-							<span>{property?.propertySquare} m2</span>
-						</div>
-					</div>
-					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						<p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
-						</div>
-					</div>
-				</Box>
-			</Stack>
-		);
-	}
+			return (
+				<Stack className="trend-card-box" key={property._id}>
+					
+				</Stack>
+			);
+		} else {
+			return (
+				<Stack className={'popular-card-box'}>
+					<Box className={'image-box'}>
+						<img src="/img/property/brand-img1.png" alt="" />
+					</Box>
+					<Stack className={'info-box'}>
+						<Rating
+							sx={{color: 'white'}}
+							name="simple-uncontrolled"
+							onChange={(event, newValue) => {
+							console.log(newValue);
+							}}
+							defaultValue={2}
+						/>
+						<Typography className={'info-item'} variant={'h3'}>
+							Get 20% Off
+						</Typography>
+						<Typography className={'info-item'} variant={'h2'}>
+							In Since Friction Books Categories
+						</Typography>
+						<Typography className={'info-item'}>
+							Only From $85.00
+						</Typography>
+						<Button className={'button'} variant={'outlined'} sx={{mt: '20px', width: "200px", fontSize:"20px",}}>Shop now</Button>
+					</Stack>
+				</Stack>
+			);
+		}
 };
 
 export default PopularPropertyCard;

@@ -1,0 +1,66 @@
+import React from 'react';
+import { Stack, Box, Divider, Typography, Rating, Button, Fab } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Property } from '../../types/property/property';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { REACT_APP_API_URL } from '../../config';
+import { useRouter } from 'next/router';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '../../../apollo/store';
+
+interface TopPropertyCardProps {
+    property: Property;
+    likePropertyHandler: any
+}
+
+const TopCategoryPropertyCard = () => {
+    const device = useDeviceDetect();
+    const router = useRouter();
+    const user = useReactiveVar(userVar);
+
+    /** HANDLERS **/
+
+    const pushDetailHandler = async (propertyId: string) => {
+        await router.push({pathname: '/property/detail', query: {id: propertyId}});
+    };
+
+    if (device === 'mobile') {
+        return (
+            <Stack></Stack>
+        );
+    } else {
+        return (
+            <Stack className={'card-box'}>
+                <Box className={'card-img'}>
+                    <img src="/img/property/solitary.jpg" alt="" />
+                </Box>
+                <Stack className={'card-info'}>
+                    <Rating
+                        sx={{color: 'orange'}}
+                        name="simple-uncontrolled"
+                        onChange={(event, newValue) => {
+                        console.log(newValue);
+                        }}
+                        defaultValue={2}
+                    />
+                    <Typography className={'info-item'} variant={'h3'}>
+                        Get 20% Off
+                    </Typography>
+                    <Typography className={'info-item'} variant={'h2'}>
+                        In Since Friction Books Categories
+                    </Typography>
+                    <Typography className={'info-item'}>
+                        Only From $85.00
+                    </Typography>
+                    <Fab className={'button-fab'} variant={'extended'}>
+                        <Button className={'button'} variant={'outlined'}>Shop now</Button>
+                    </Fab>
+                </Stack>
+            </Stack>
+        );
+    }
+};
+
+export default TopCategoryPropertyCard;

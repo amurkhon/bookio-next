@@ -54,9 +54,7 @@ const TopCategoryPropertyCard = () => {
                     <Typography className={'info-item'}>
                         Only From $85.00
                     </Typography>
-                    <Fab className={'button-fab'} variant={'extended'}>
-                        <Button className={'button'} variant={'outlined'}>Shop now</Button>
-                    </Fab>
+                    <Button className={'button'} variant={'outlined'}>Shop now</Button>
                 </Stack>
             </Stack>
         );

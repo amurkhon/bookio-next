@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
 import TrendPropertyCard from "./TrendPropertyCard";
 import TopCategoryPropertyCard from "./TopCategoryCard";
@@ -61,6 +61,7 @@ const TopCategories = () => {
                             );
                         })}
                     </Stack>
+                    <Button className={'main-button'} variant={'outlined'}>View More</Button>
                 </Stack>
             </Stack>
         );

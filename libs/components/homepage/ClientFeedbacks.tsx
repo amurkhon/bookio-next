@@ -12,7 +12,7 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 
-const EventCard = () => {
+const FeedBackCard = () => {
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
@@ -22,32 +22,23 @@ const EventCard = () => {
 			<CssVarsProvider>
 			<Stack className={'card-box'}>
 				<Stack className={'introduction'}>
-					<Card
-						className={'card'}
-						variant="plain"
-						orientation="horizontal"
-					>
-						<span className='img-field'></span>
-						<AspectRatio ratio="1" sx={{ width: 90, borderRadius: "50%", marginLeft: '3px'}}>
-							<img
-							src={'/img/profile/defaultUser.svg'}
-							loading="lazy"
-							alt=""
-							/>
-						</AspectRatio>
-						<CardContent>
-							<Typography level="title-lg" id="card-description">
-								Yosemite Park
-							</Typography>
-							<Typography
-							level="body-sm"
-							aria-describedby="card-description"
-							sx={{ mb: 1 }}
-							>
-								California, USA
-							</Typography>
-						</CardContent>
-					</Card>
+					<img
+						src={'/img/profile/girl.svg'}
+						loading="lazy"
+						alt=""
+					/>
+					<Stack>
+						<Typography level="title-lg" id="card-description">
+							Yosemite Park
+						</Typography>
+						<Typography
+						level="body-sm"
+						aria-describedby="card-description"
+						sx={{ mb: 1 }}
+						>
+							California, USA
+						</Typography>
+					</Stack>
 				</Stack>
 				<Stack className={'card-body'}>
 					<Stack className={'feedback-purpose'}>
@@ -67,7 +58,7 @@ const EventCard = () => {
 	}
 };
 
-const Events = () => {
+const FeedBacks = () => {
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
@@ -83,7 +74,13 @@ const Events = () => {
 						<Swiper
 							className={'feedback-swiper'}
 							slidesPerView={2}
+							loop={true}
+							speed={10000}
 							spaceBetween={10}
+							autoplay={{
+								delay: 5000,
+								disableOnInteraction: false,
+							}}
 							modules={[Autoplay, Navigation, Pagination]}
 							navigation={{
 								nextEl: '.swiper-popular-next',
@@ -96,7 +93,7 @@ const Events = () => {
 							{[1,2,3,4].map((ele, index) => {
 								return (
 									<SwiperSlide key={index} className={'feedback-slide'}>
-										<EventCard />
+										<FeedBackCard />
 									</SwiperSlide>
 								);
 							})}
@@ -108,4 +105,4 @@ const Events = () => {
 	}
 };
 
-export default Events;
+export default FeedBacks;

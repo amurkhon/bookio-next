@@ -623,35 +623,24 @@
 							width: 100%;
 							display: flex;
 							flex-direction: row;
-							&:hover {
-								.card-box {
-									background-color: #f8ebe5;
-									border-radius: 10px;
-								}
-								.card {
-									background-color: #f8ebe5;
-								} 
-								.icon {
-									color: #0a1d57;
-								}
-								.img-field {
-									color: white;
-								}
-							}
 
 							.card-box {
 								width: 100%;
 								padding: 20px;
-								.card {
-									align-items: center;
-									padding: 0px;
+								background-color: #f8ebe5;
+								border-radius: 10px 150px 10px 10px;
+								border-bottom: 3px solid #bd7579;
+								border-top: 5px solid #bd7579;
 
-									.img-field {
-										width: 95px;
-										height: 95px;
-										background-color: #be767a;
-										position: absolute;
-										border-radius: 50%;
+								.introduction {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+
+									img {
+										width: 100px;
+										border-radius: 50% 50% 10% 50%;
+										margin-right: 15px;
 									}
 								}
 
@@ -811,144 +800,137 @@
 			position: relative;
 			padding: 124px 0px 61px;
 			width: 100%;
-			height: 860px;
+			height: auto;
 			display: flex;
 			flex-direction: row;
 			.container {
 				flex-direction: column;
 				align-items: center;
+				
+				.title {
+					width: 100%;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
+
+					.left {
+						align-self: flex-start;
+						font-family: $font;
+						font-style: normal;
+						font-size: 30px;
+						font-weight: 400;
+						line-height: normal;
+						text-transform: capitalize;
+					}
+
+					.right {
+						font-size: 20px;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: space-between;
+
+						.more-box {
+							display: flex;
+							flex-direction: row;
+							cursor: pointer;
+							align-items: center;
+							span {
+								color: #181a20;
+								font-family: $font;
+								font-size: 15px;
+								font-style: normal;
+								font-weight: 600;
+								line-height: normal;
+								text-transform: capitalize;
+							}
+							img {
+								margin-left: 10px;
+								width: 16px;
+								height: 16px;
+							}
+						}
+					}
+				}
 				.community-main {
 					width: 100%;
 					margin-top: 60px;
 					display: flex;
 					flex-direction: row;
-					justify-content: space-between;
-					.center-line {
-						height: 90%;
-						align-self: end;
+					flex-wrap: wrap;
+					justify-content: start;
+
+					.card1 {
+						width: 700px;
 					}
-					.content-top {
-						margin-bottom: 26px;
-						width: 100%;
-						height: 30px;
-						display: flex;
-						flex-direction: row;
-						justify-content: flex-end;
-						align-items: center;
-						span {
-							font-family: $font;
-							font-style: normal;
-							font-weight: 500;
-							font-size: 16px;
-							line-height: 36px;
-							color: #616161;
-							cursor: pointer;
-						}
-						img {
-							margin-left: 10px;
-							width: 12px;
-							height: 12px;
-						}
+
+					.card2 {
+						width: 700px;
 					}
-					.community-left {
-						width: 642px;
+
+					.card {
+						width: 405px;
 						height: auto;
-						display: flex;
-						flex-direction: column;
-						.card-wrap {
+						margin-right: 28px;
+						background-color: #f8ebe5;
+						margin-bottom: 20px;
+						&:hover {
+							background-color: #c07c7f;
+							transition-duration: 0.5s;
+							color: white;
+
+							.icon {
+								color: white;
+							}
+
+							p {
+								color: white;
+							}
+
+							.devider {
+								background-color: white;
+							}
+							
+							.button {
+								background-color: white;
+								color: #c07c7f;
+							}
+						}
+
+						.card-content {
+							width: 100%;
 							display: flex;
-							flex-direction: row;
-							flex-wrap: wrap;
-							.vertical-card {
-								margin-right: 12px;
-								margin-bottom: 18px;
-								width: 202px;
+							flex-direction: column;
+							padding: 10px;
+
+							.meta-info {
 								display: flex;
-								flex-direction: column;
-								cursor: pointer;
-								.community-img {
-									width: 100%;
-									height: 141px;
-									background-size: cover;
-									background-repeat: round;
-									border-radius: 5px;
-									div {
-										width: 32px;
-										height: 32px;
-										display: flex;
-										justify-content: center;
-										align-items: center;
-										background: #f54d56;
-										border-radius: 5px 0px;
-										font-family: $font;
-										font-style: normal;
-										font-weight: 400;
-										font-size: 19px;
-										line-height: 36px;
-										letter-spacing: -0.015em;
-										color: #bdbdbd;
+								flex-direction: row;
+								justify-content: flex-start;
+								align-items: center;
+								margin-bottom: 20px;
+
+								.info {
+									display: flex;
+									flex-direction: row;
+									justify-content: space-between;
+									align-items: center;
+									margin-right: 20px;
+									font-size: 20px;
+
+									.icon {
+										margin-right: 5px;
 									}
 								}
-								strong {
-									margin-top: 10px;
-									font-family: $font;
-									font-style: normal;
-									font-weight: 700;
-									font-size: 18px;
-									line-height: 36px;
-									letter-spacing: 0.105em;
-									color: #000000;
-								}
-								span {
-									font-family: $font;
-									font-style: normal;
-									font-weight: 400;
-									font-size: 16px;
-									line-height: 19px;
-									letter-spacing: -0.015em;
-									color: #d3d3d3;
+							}
+							.button {
+								&:hover {
+									background-color: #2e4a5b;
+									color: white;
 								}
 							}
-						}
-					}
-					.community-right {
-						width: 590px;
-						height: auto;
-						display: flex;
-						flex-direction: column;
-						.horizontal-card {
-							display: flex;
-							flex-direction: row;
-							cursor: pointer;
-							margin-bottom: 34px;
-							img {
-								width: 180px;
-								height: 111px;
-								border-radius: 7px;
-							}
-							div {
-								margin-left: 25px;
-								display: flex;
-								flex-direction: column;
-								strong {
-									margin-top: 15px;
-									font-family: $font;
-									font-style: normal;
-									font-weight: 500;
-									font-size: 13px;
-									letter-spacing: 0.105em;
-									color: #212121;
-								}
-								span {
-									font-family: $font;
-									font-style: normal;
-									font-weight: 500;
-									font-size: 13px;
-									line-height: 36px;
-									letter-spacing: 0.105em;
-									color: #bdbdbd;
-								}
-							}
+
 						}
 					}
 				}

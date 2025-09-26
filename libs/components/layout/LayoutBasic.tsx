@@ -94,8 +94,8 @@ const withLayoutBasic = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Bookio</title>
-						<meta name={'title'} content={`Bookio`} />
+						<title>Bookle</title>
+						<meta name={'title'} content={`Bookle`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -116,8 +116,8 @@ const withLayoutBasic = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Bookio</title>
-						<meta name={'title'} content={`Bookio`} />
+						<title>Bookle</title>
+						<meta name={'title'} content={`Bookle`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>

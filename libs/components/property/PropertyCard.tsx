@@ -37,8 +37,8 @@ const PropertyCard = () => {
 				<Stack className="top">
 					<Link
 						href={{
-							pathname: '/property/detail',
-							query: { id:'1'},
+							pathname: '/books/detail',
+							query: {id: '1'},
 						}}
 					>
 						<img src={'/img/property/under-sky.webp'} alt="" />

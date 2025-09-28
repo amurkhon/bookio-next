@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Checkbox, ListItemText, Stack, Typography } from '@mui/material';
+import { Theme, useTheme } from '@mui/material/styles';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyLocation, PropertyType } from '../../enums/property.enum';
+import { PropertyCategory, PropertyLocation, PropertyType } from '../../enums/property.enum';
 import { NEXT_PUBLIC_REACT_APP_API_URL, propertySquare } from '../../config';
 import { PropertyInput } from '../../types/property/property.input';
 import axios from 'axios';
@@ -12,14 +16,34 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { CREATE_PROPERTY, UPDATE_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTY } from '../../../apollo/user/query';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const languages = [
+  'English',
+  'Korean',
+  'Uzbek'
+];
 
 const AddProperty = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
+	const [fileName, setFileName] = useState<String>('');
+	const [audioName, setAudioName] = useState<String>('');
 	const [insertPropertyData, setInsertPropertyData] = useState<PropertyInput>(initialValues);
 	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
-	const [propertyLocation, setPropertyLocation] = useState<PropertyLocation[]>(Object.values(PropertyLocation));
+	const [propertyCategory, setPropertyCategory] = useState<PropertyCategory[]>(Object.values(PropertyCategory));
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
 
@@ -44,21 +68,119 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 		setInsertPropertyData({
 			...insertPropertyData,
 			propertyTitle: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyTitle : '',
+			isbn: getPropertyData?.getProperty ? getPropertyData?.getProperty?.isbn : '',
+			propertyAuthor: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAuthor : '',
 			propertyPrice: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyPrice : 0,
 			propertyType: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyType : '',
-			propertyLocation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLocation : '',
-			propertyAddress: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAddress : '',
-			propertyBarter: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBarter : false,
-			propertyRent: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRent : false,
-			propertyRooms: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRooms : 0,
-			propertyBeds: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBeds : 0,
-			propertySquare: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertySquare : 0,
+			propertyCategory: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyCategory : '',
+			propertyPages: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyPages : 0,
 			propertyDesc: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyDesc : '',
 			propertyImages: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyImages : [],
+			propertyLanguages: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLanguages : [],
+			propertyFile: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyFile : '',
+			propertyAudio: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAudio : '',
+			publicationDate: getPropertyData?.getProperty ? getPropertyData?.getProperty?.publicationDate : '',
 		});
 	}, [getPropertyLoading, getPropertyData]);
 
 	/** HANDLERS **/
+	const uploadFile = async (e: any) => {
+		try {
+			const file = e.target.files[0];
+			console.log('+image:', file);
+
+			setFileName(file.name);
+
+			const formData = new FormData();
+			formData.append(
+				'operations',
+				JSON.stringify({
+					query: `mutation PdfUploader($file: Upload!, $target: String!){ 
+						pdfUploader(file: $file, target: $target)
+					}`,
+					variables: {
+						file: null,
+						target: 'book',
+					},
+				}),
+			);
+			formData.append(
+				'map',
+				JSON.stringify({
+					'0': ['variables.file'],
+				}),
+			);
+			formData.append('0', file);
+
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL}`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					'apollo-require-preflight': true,
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			console.log("response: ", response);
+
+			const responseFile = response.data.data.pdfUploader;
+			console.log('+responseImage: ', responseFile);
+			insertPropertyData.propertyFile = responseFile;
+			setInsertPropertyData({ ...insertPropertyData });
+
+			return `${NEXT_PUBLIC_REACT_APP_API_URL}/${responseFile}`;
+		} catch (err) {
+			console.log('Error, uploadFile:', err);
+		}
+	};
+
+	const uploadAudio = async (e: any) => {
+		try {
+			const audio = e.target.files[0];
+			console.log('+image:', audio);
+
+			setAudioName(audio.name);
+			console.log("audioName", audioName);
+
+			const formData = new FormData();
+			formData.append(
+				'operations',
+				JSON.stringify({
+					query: `mutation AudioUploader($file: Upload!, $target: String!){ 
+						audioUploader(file: $file, target: $target)
+					}`,
+					variables: {
+						file: null,
+						target: 'audio',
+					},
+				}),
+			);
+			formData.append(
+				'map',
+				JSON.stringify({
+					'0': ['variables.file'],
+				}),
+			);
+			formData.append('0', audio);
+
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL}`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					'apollo-require-preflight': true,
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			console.log("response: ", response);
+
+			const responseAudio = response.data.data.audioUploader;
+			console.log('+responseImage: ', responseAudio);
+			insertPropertyData.propertyAudio = responseAudio;
+			setInsertPropertyData({ ...insertPropertyData });
+
+			return `${NEXT_PUBLIC_REACT_APP_API_URL}/${responseAudio}`;
+		} catch (err) {
+			console.log('Error, uploadFile:', err);
+		}
+	};
+
 	async function uploadImages() {
 		try {
 			const formData = new FormData();
@@ -115,16 +237,15 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 		if (
 			insertPropertyData.propertyTitle === '' ||
 			insertPropertyData.propertyPrice === 0 || // @ts-ignore
+			insertPropertyData.propertyCategory === '' || // @ts-ignore
 			insertPropertyData.propertyType === '' || // @ts-ignore
 			insertPropertyData.propertyLocation === '' || // @ts-ignore
-			insertPropertyData.propertyAddress === '' || // @ts-ignore
-			insertPropertyData.propertyBarter === '' || // @ts-ignore
-			insertPropertyData.propertyRent === '' ||
-			insertPropertyData.propertyRooms === 0 ||
-			insertPropertyData.propertyBeds === 0 ||
-			insertPropertyData.propertySquare === 0 ||
+			insertPropertyData.propertyPages === 0 ||
 			insertPropertyData.propertyDesc === '' ||
-			insertPropertyData.propertyImages.length === 0
+			insertPropertyData.isbn === '' ||
+			insertPropertyData.publicationDate === ''||
+			insertPropertyData.propertyImages.length === 0 ||
+			insertPropertyData.propertyLanguages.length === 0
 		) {
 			return true;
 		}
@@ -173,7 +294,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 		}
 	}, [insertPropertyData]);
 
-	if (user?.memberType !== 'AGENT') {
+	if (user?.memberType !== 'AUTHOR') {
 		router.back();
 	}
 
@@ -247,23 +368,62 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 							<Stack className="config-row">
 								<Stack className="price-year-after-price">
-									<Typography className="title">Select Location</Typography>
+									<Typography className="title">Author Name</Typography>
+									<input
+										type="text"
+										className="description-input"
+										placeholder={'Full Name'}
+										value={insertPropertyData.propertyAuthor}
+										onChange={({ target: { value } }) =>
+											setInsertPropertyData({ ...insertPropertyData, propertyAuthor: value })
+										}
+									/>
+								</Stack>
+								<Stack className="price-year-after-price">
+									<Typography className="title">ISBN</Typography>
+									<input
+										type="text"
+										className="description-input"
+										placeholder={'isbn code'}
+										value={insertPropertyData.isbn}
+										onChange={({ target: { value } }) =>
+											setInsertPropertyData({ ...insertPropertyData, isbn: value })
+										}
+									/>
+								</Stack>
+								<Stack className="price-year-after-price">
+									<Typography className="title">Publication Date</Typography>
+									<input
+										type="text"
+										className="description-input"
+										placeholder={'YYYY-MM-DD'}
+										value={insertPropertyData.publicationDate}
+										onChange={({ target: { value } }) =>
+											setInsertPropertyData({ ...insertPropertyData, publicationDate: value })
+										}
+									/>
+								</Stack>
+							</Stack>
+
+							<Stack className="config-row">
+								<Stack className="price-year-after-price">
+									<Typography className="title">Select Category</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertPropertyData.propertyLocation || 'select'}
-										value={insertPropertyData.propertyLocation || 'select'}
+										defaultValue={insertPropertyData.propertyCategory || 'select'}
+										value={insertPropertyData.propertyCategory || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertPropertyData({ ...insertPropertyData, propertyLocation: value })
+											setInsertPropertyData({ ...insertPropertyData, propertyCategory: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{propertyLocation.map((location: any) => (
-												<option value={`${location}`} key={location}>
-													{location}
+											{propertyCategory.map((category: any) => (
+												<option value={`${category}`} key={category}>
+													{category}
 												</option>
 											))}
 										</>
@@ -272,122 +432,108 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Address</Typography>
+									<Typography className="title">Languages</Typography>
+
+									<FormControl
+										sx={{
+										width: '100%',
+										// make MUI Select look like your .select-description
+										'& .MuiOutlinedInput-root': {
+											borderRadius: '8px',
+										},
+										'& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E7EB' },
+										'& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E7EB' }, // no hover border change
+										'& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E7EB' }, // no focus border change
+										'& .MuiSelect-icon': { display: 'none' }, // hide MUI arrow (we use your custom one)
+										'& .MuiSelect-select': { padding: '14px 16px' }, // match height/padding
+										fontSize: '16px',
+										}}
+									>
+										<Select
+										multiple
+										displayEmpty
+										value={insertPropertyData.propertyLanguages ?? []}
+										onChange={(e) => {
+											const value = e.target.value as string[];
+											setInsertPropertyData(prev => ({ ...prev, propertyLanguages: value }));
+										}}
+										renderValue={(selected) => {
+											const arr = selected as string[];
+											if (arr.length === 0) return <span style={{ color: '#9CA3AF' }}>Select</span>;
+											return arr.join(', ');
+										}}
+										MenuProps={MenuProps}
+										// keep outlined look to match others
+										variant="outlined"
+										>
+										{languages.map((name) => (
+											<MenuItem key={name} value={name}>
+											<Checkbox
+												size="small"
+												checked={(insertPropertyData.propertyLanguages ?? []).includes(name)}
+											/>
+											<ListItemText primary={name} />
+											</MenuItem>
+										))}
+										</Select>
+									</FormControl>
+
+									{/* keep your divider + custom arrow so it matches other selects */}
+									<div className={'divider'}></div>
+									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
+								</Stack>
+							</Stack>
+
+							<Stack className="config-row">
+								<Stack className="price-year-after-price">
+									<Typography className="title">Pages</Typography>
 									<input
-										type="text"
+										type="number"
 										className="description-input"
-										placeholder={'Address'}
-										value={insertPropertyData.propertyAddress}
+										placeholder={'Count'}
+										value={insertPropertyData.propertyPages}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyAddress: value })
+											setInsertPropertyData({ ...insertPropertyData, propertyPages: Number(value) })
 										}
 									/>
 								</Stack>
-							</Stack>
-
-							<Stack className="config-row">
 								<Stack className="price-year-after-price">
-									<Typography className="title">Barter</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
-										}
-									>
-										<option disabled={true} selected={true}>
-											Select
-										</option>
-										<option value={'yes'}>Yes</option>
-										<option value={'no'}>No</option>
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
+									<Typography className="title">File</Typography>
+									<Box className={'fileInput'}>
+										<input
+											hidden
+											type="file"
+											id="hidden-input1"
+											onChange={uploadFile}
+											accept="application/pdf, application/x-pdf, application/epub+zip, application/x-mobipocket-ebook, application/x-ibooks+zip"
+										/>
+										<label htmlFor="hidden-input1" className="labeler">
+											<Box sx={{display: 'flex'}}>
+												<Typography>Upload File</Typography>
+												<UploadFileIcon />
+											</Box>
+											<span className={'name'}>{`${fileName.slice(0, 10)}`}</span>
+										</label>
+									</Box>
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Rent</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRent: value === 'yes' })
-										}
-									>
-										<option disabled={true} selected={true}>
-											Select
-										</option>
-										<option value={'yes'}>Yes</option>
-										<option value={'no'}>No</option>
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-							</Stack>
-
-							<Stack className="config-row">
-								<Stack className="price-year-after-price">
-									<Typography className="title">Rooms</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyRooms || 'select'}
-										defaultValue={insertPropertyData.propertyRooms || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRooms: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{[1, 2, 3, 4, 5].map((room: number) => (
-											<option value={`${room}`}>{room}</option>
-										))}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Bed</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyBeds || 'select'}
-										defaultValue={insertPropertyData.propertyBeds || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBeds: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{[1, 2, 3, 4, 5].map((bed: number) => (
-											<option value={`${bed}`}>{bed}</option>
-										))}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Square</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertySquare || 'select'}
-										defaultValue={insertPropertyData.propertySquare || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertySquare: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{propertySquare.map((square: number) => {
-											if (square !== 0) {
-												return <option value={`${square}`}>{square}</option>;
-											}
-										})}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
+									<Typography className="title">Audio</Typography>
+									<Box className={'fileInput'}>
+										<input
+											hidden
+											type="file"
+											id="hidden-input2"
+											onChange={uploadAudio}
+											accept="audio/*"
+										/>
+										<label htmlFor="hidden-input2" className="labeler">
+											<Box sx={{display: 'flex'}}>
+												<Typography>Upload Audio File</Typography>
+												<UploadFileIcon sx={{marginLeft: '5px'}} />
+											</Box>
+											<span className={'name'}>{`${audioName.slice(0, 10)}`}</span>
+										</label>
+									</Box>
 								</Stack>
 							</Stack>
 
@@ -517,17 +663,18 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 AddProperty.defaultProps = {
 	initialValues: {
 		propertyTitle: '',
+		propertyCategory: '',
+		propertyAuthor: '',
+		isbn: '',
+		propertyLanguages: [],
+		propertyFile: '',
+		propertyAudio: '',
 		propertyPrice: 0,
 		propertyType: '',
-		propertyLocation: '',
-		propertyAddress: '',
-		propertyBarter: false,
-		propertyRent: false,
-		propertyRooms: 0,
-		propertyBeds: 0,
-		propertySquare: 0,
+		propertyPages: 0,
 		propertyDesc: '',
 		propertyImages: [],
+		publicationDate: '',
 	},
 };
 

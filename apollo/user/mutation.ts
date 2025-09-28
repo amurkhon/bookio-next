@@ -126,25 +126,26 @@ export const CREATE_PROPERTY = gql`
 	mutation CreateProperty($input: PropertyInput!) {
 		createProperty(input: $input) {
 			_id
-			propertyType
 			propertyStatus
-			propertyLocation
-			propertyAddress
+			propertyCategory
 			propertyTitle
 			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
+			propertyAuthor
+			propertyPages
+			isbn
 			propertyViews
 			propertyLikes
+			propertyComments
+			propertyRank
+			propertyDownloads
 			propertyImages
+			propertyLanguages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyFile
+			propertyAudio
 			memberId
-			soldAt
 			deletedAt
-			constructedAt
+			publicationDate
 			createdAt
 			updatedAt
 		}

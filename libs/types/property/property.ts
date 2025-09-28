@@ -1,4 +1,4 @@
-import { PropertyCategory, PropertyStatus } from '../../enums/property.enum';
+import { PropertyCategory, PropertyStatus, PropertyType } from '../../enums/property.enum';
 import { Member } from '../member/member';
 
 export interface MeLiked {
@@ -15,6 +15,7 @@ export interface Property {
 	_id: string;
 	propertyCategory: PropertyCategory;
 	propertyStatus: PropertyStatus;
+	propertyType: PropertyType;
 	propertyTitle: string;
 	propertyPrice: number;
 	propertyAuthor: string;

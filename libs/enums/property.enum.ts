@@ -4,15 +4,33 @@ export enum PropertyStatus {
 }
 
 export enum PropertyCategory {
-	NOVEL='Novel',
-	BUSINESS='Business',
-	FICTION='Fiction',
-	SCIENCE='Science',
-	MEDICAL='Medical',
-	COMPUTERS='Computers',
-	COOKING='Cooking',
-	DRAMA='Drama',
-	PSYCHOLOGY='Psychology',
-	NATURE='Nature',
-	ROMANCE='Romance'
+	NOVEL='NOVEL',
+	BUSINESS='BUSINESS',
+	FICTION='FICTION',
+	SCIENCE='SCIENCE',
+	MEDICAL='MEDICAL',
+	COMPUTERS='COMPUTERS',
+	COOKING='COOKING',
+	DRAMA='DRAMA',
+	PSYCHOLOGY='PSYCHOLOGY',
+	NATURE='NATURE',
+	ROMANCE='ROMANCE'
+}
+
+export enum PropertyLocation {
+	SEOUL = 'SEOUL',
+	BUSAN = 'BUSAN',
+	INCHEON = 'INCHEON',
+	DAEGU = 'DAEGU',
+	GYEONGJU = 'GYEONGJU',
+	GWANGJU = 'GWANGJU',
+	CHONJU = 'CHONJU',
+	DAEJON = 'DAEJON',
+	JEJU = 'JEJU',
+}
+
+export enum PropertyType {
+	PAPERBACK = 'PAPERBACK',
+	HARDCOVER = 'HARDCOVER',
+	FULL = 'FULL',
 }

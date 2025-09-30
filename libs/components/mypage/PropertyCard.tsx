@@ -60,14 +60,14 @@ export const PropertyCard = (props: PropertyCardProps) => {
 				</Stack>
 				<Stack className="information-box" onClick={() => pushPropertyDetail(property?._id)}>
 					<Typography className="name">{property.propertyTitle}</Typography>
-					<Typography className="address">{property.propertyAddress}</Typography>
+					<Typography className="address">{property.propertyType}</Typography>
 					<Typography className="price">
 						<strong>${formatterStr(property?.propertyPrice)}</strong>
 					</Typography>
 				</Stack>
 				<Stack className="date-box">
 					<Typography className="date">
-						<Moment format="DD MMMM, YYYY">{property.createdAt}</Moment>
+						<Moment format="DD MMMM, YYYY">{property.publicationDate}</Moment>
 					</Typography>
 				</Stack>
 				<Stack className="status-box">

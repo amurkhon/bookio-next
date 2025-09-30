@@ -273,12 +273,15 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 	const updatePropertyHandler = useCallback(async () => {
 		try {
+			console.log("code shu yerdan o'tdi")
 			// @ts-ignore
 			insertPropertyData._id = getPropertyData?.getProperty?._id;
 
+			console.log("id: ", insertPropertyData);
+
 			const result = await updateProperty({
 				variables: {
-					input: insertPropertyData,
+					input: {...insertPropertyData},
 				},
 			});
 
@@ -290,6 +293,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 				},
 			});
 		} catch (err: any) {
+			console.log("err: ", err);
 			sweetErrorHandling(err).then();
 		}
 	}, [insertPropertyData]);
@@ -330,12 +334,12 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 								<Stack className="price-year-after-price">
 									<Typography className="title">Price</Typography>
 									<input
-										type="text"
+										type="number"
 										className="description-input"
 										placeholder={'Price'}
 										value={insertPropertyData.propertyPrice}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyPrice: parseInt(value) })
+											setInsertPropertyData({ ...insertPropertyData, propertyPrice: Number(value) })
 										}
 									/>
 								</Stack>
@@ -394,7 +398,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 								<Stack className="price-year-after-price">
 									<Typography className="title">Publication Date</Typography>
 									<input
-										type="text"
+										type="date"
 										className="description-input"
 										placeholder={'YYYY-MM-DD'}
 										value={insertPropertyData.publicationDate}

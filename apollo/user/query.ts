@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
  *         MEMBER         *
  *************************/
 
-export const GET_AGENTS = gql`
+export const GET_AUTHORS = gql`
 	query GetAuthors($input: AuthorsInquiry!) {
 		getAuthors(input: $input) {
 			list {

@@ -33,7 +33,7 @@ export interface Property {
 	memberId: string;
 	propertyAudio: string;
 	deletedAt?: Date;
-	publicationDate: Date;
+	publicationDate: string;
 	createdAt: Date;
 	updatedAt: Date;
 	/** from aggregation **/

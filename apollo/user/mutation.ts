@@ -178,6 +178,7 @@ export const UPDATE_PROPERTY = gql`
 			publicationDate
 			createdAt
 			updatedAt
+			propertyType
 		}
 	}
 `;

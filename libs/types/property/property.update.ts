@@ -14,6 +14,6 @@ export interface PropertyUpdate {
 	propertyDesc?: string;
 	propertyFile?: string;
 	propertyAudio?: string;
-	publicationDate?: Date;
+	publicationDate?: string;
 	deletedAt?: Date;
 }

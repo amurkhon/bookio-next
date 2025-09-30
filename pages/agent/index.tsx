@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Member } from '../../libs/types/member/member';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_AGENTS } from '../../apollo/user/query';
+import { GET_AUTHORS } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Message } from '../../libs/enums/common.enum';
@@ -46,7 +46,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 		error: getAgentsError,
 		refetch: getAgentsRefetch,
 	} = useQuery(
-		GET_AGENTS,
+		GET_AUTHORS,
 		{
 			fetchPolicy: "network-only",
 			variables: {input: searchFilter},

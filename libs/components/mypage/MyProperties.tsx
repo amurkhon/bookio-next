@@ -37,8 +37,8 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 			variables: { input: searchFilter },
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
-				setAgentProperties(data?.getAuthors?.list);
-				setTotal(data?.getAuthors?.metaCounter[0]?.total ?? 0);
+				setAgentProperties(data?.getAuthorProperties?.list);
+				setTotal(data?.getAuthorProperties?.metaCounter[0]?.total ?? 0);
 			},
 		}
 	);

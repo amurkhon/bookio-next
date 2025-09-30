@@ -10,17 +10,23 @@ import { userVar } from '../../../apollo/store';
 import { MemberUpdate } from '../../types/member/member.update';
 import { UPDATE_MEMBER } from '../../../apollo/user/mutation';
 import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../sweetAlert';
+import {useRouter} from 'next/router';
 
 const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
+	const router = useRouter();
 	const [updateData, setUpdateData] = useState<MemberUpdate>(initialValues);
 
 	/** APOLLO REQUESTS **/
 	const [updateMember] = useMutation(UPDATE_MEMBER);
 
 	/** LIFECYCLES **/
+	useEffect(() => {
+		if (!user._id) router.push('/').then();
+	}, [user]);
+
 	useEffect(() => {
 		setUpdateData({
 			...updateData,

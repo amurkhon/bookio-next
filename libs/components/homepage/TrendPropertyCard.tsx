@@ -17,56 +17,26 @@ import Link from '@mui/joy/Link';
 import Favorite from '@mui/icons-material/Favorite';
 import Visibility from '@mui/icons-material/Visibility';
 import { CssVarsProvider } from '@mui/joy/styles';
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
 
 interface TrendPropertyCardProps {
 	property: Property;
 	likePropertyHandler: any
 }
 
-const TrendPropertyCard = () => {
-	// const { property, likePropertyHandler } = props;
+const TrendPropertyCard = (props: TrendPropertyCardProps) => {
+	const { property, likePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 
-	const property = {
-		_id: "bwfdg436frg4538888888888888879",
-		propertyStatus: "ACTIVE",
-		propertyCategory: "Fiction",
-		propertyTitle: "Cold Island",
-		propertyAuthor: "Amurkhon Akramjonov",
-		propertyPrice: 17,
-		propertyPages: 239,
-		isbn: "978-1662530388",
-		propertyViews: 0,
-		propertyLikes: 0,
-		propertyComments: 0,
-		propertyRank: 0,
-		propertyDownloads: 0,
-		propertyLanguages: [
-			"Eng",
-			"Kor"
-		],
-		propertyImages: [],
-		propertyFile: "",
-		propertyAudio: "",
-		memberId: {
-			$oid: "68be50c5cd93b2dc035b1434"
-		},
-		publicationDate: {
-			$date: "2025-09-01T00:00:00.000Z"
-		},
-		createdAt: {
-			$date: "2025-09-10T06:12:06.508Z"
-		},
-		updatedAt: {
-			date: "2025-09-10T07:30:35.064Z"
-		},
-	}
-
 	/** HANDLERS **/
 	const pushDetailHandler = async (propertyId: string) => {
 		await router.push({pathname: '/property/detail', query: {id: propertyId}});
+	};
+
+	const pushAuthorDetailHandler = async (memberId: string | undefined) => {
+		await router.push({pathname: '/agent/detail', query: {agentId: memberId}});
 	};
 
 	if (device === 'mobile') {
@@ -79,14 +49,20 @@ const TrendPropertyCard = () => {
 		return (
 			<CssVarsProvider>
 			<Stack className="trend-card-box" key={property._id}>
-				<Card sx={{ width: "200",border: 0, p: 0 }}>
-					<Box className={'img-box'} sx={{ position: 'relative', width: '200px'}}>
+				<Card 
+					sx={{ width: "200",border: 0, p: 0 }}
+				>
+					<Box 
+						className={'img-box'} 
+						sx={{ position: 'relative', width: '200px'}}
+					>
 						<AspectRatio ratio="4/6">
 						<figure>
 							<img className={'card-img'}
-							src="/img/property/under-sky.webp"
+							src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`}
 							loading="lazy"
 							alt="Yosemite by Casey Horner"
+							onClick={() => {pushDetailHandler(property?._id)}}
 							/>
 						</figure>
 						</AspectRatio>
@@ -127,62 +103,57 @@ const TrendPropertyCard = () => {
 										display: 'block',
 									}}
 									>
-									Yosemite
+										{property?.propertyCategory}
 									</Link>
 								</Typography>
-								<IconButton
-									size="sm"
-									variant="solid"
-									color="neutral"
-									sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
-								>
-									<Favorite />
-								</IconButton>
+								<Box sx={{position: 'absolute', bottom: '0px', right: '10px', display: 'flex', flexDirection: 'column'}}>
+									<IconButton
+										size="sm"
+										variant="solid"
+										color="neutral"
+										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)', mb: '5px' }}
+										onClick={() => {likePropertyHandler(user?._id, property?._id)}}
+									>
+										{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+											<Favorite style={{ color: 'red' }} />
+										) : (
+											<Favorite />
+										)}
+										<span style={{marginLeft: '5px'}}>
+											{property?.propertyLikes}
+										</span>
+									</IconButton>
+									<IconButton
+										size="sm"
+										variant="solid"
+										color="neutral"
+										sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
+										onClick={() => {likePropertyHandler(user?._id, property?._id)}}
+									>
+										<Visibility />
+										<span style={{marginLeft: '5px'}}>
+											{property?.propertyViews}
+										</span>
+									</IconButton>
+								</Box>
 							</Box>
 						</div>
 						</CardCover>
 					</Box>
 					<Box className={'info'} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
 						<Typography className={'title'} sx={{ fontSize: 'sm', fontWeight: 'md' }}>
-							National Park
+							{property?.propertyTitle && property?.propertyTitle.length >= 22 ? property?.propertyTitle.slice(0, 22) : property?.propertyTitle }
 						</Typography>
 						<Stack className={'stats-info'}>
 							<Avatar
-								src="https://images.unsplash.com/profile-1502669002421-a8d274ad2897?dpr=2&auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff"
+								onClick={() => {pushAuthorDetailHandler(property?.memberData?._id)}}
+								src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.memberData?.memberImage}`}
 								size="sm"
 								sx={{ '--Avatar-size': '1.5rem' }}
 							/>
 							<Typography sx={{ fontSize: 'sm', fontWeight: 'md', ml:'5px' }}>
-								Amir
+								{property?.propertyAuthor} (Author)
 							</Typography>
-							<Link
-								href="#dribbble-shot"
-								level="body-xs"
-								underline="none"
-								startDecorator={<Favorite />}
-								sx={{
-									fontWeight: 'md',
-									ml: 'auto',
-									color: 'text.secondary',
-									'&:hover': { color: 'danger.plainColor' },
-								}}
-							>
-								117
-							</Link>
-							<Link
-								href="#dribbble-shot"
-								level="body-xs"
-								underline="none"
-								startDecorator={<Visibility />}
-								sx={{
-									fontWeight: 'md',
-									color: 'text.secondary',
-									ml: '5px',
-									'&:hover': { color: 'primary.plainColor' },
-								}}
-							>
-								10.4k
-							</Link>
 						</Stack>
 					</Box>
 				</Card>

@@ -21,6 +21,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { GET_COMMENTS, GET_MEMBER, GET_PROPERTIES } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
+import PropertyCard from '../../libs/components/agent/PropertyCard';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -209,7 +210,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							{agentProperties.map((property: Property) => {
 								return (
 									<div className={'wrap-main'} key={property?._id}>
-										<PropertyBigCard likePropertyHandler={likePropertyHandler} property={property} key={property?._id} />
+										<PropertyCard  />
 									</div>
 								);
 							})}

@@ -20,7 +20,7 @@ const TopAgents = (props: TopAgentsProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [topAgents, setTopAgents] = useState<Member[]>([]);
+	const [topAuthors, setTopAuthors] = useState<Member[]>([]);
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -33,10 +33,9 @@ const TopAgents = (props: TopAgentsProps) => {
 		variables: {input: initialInput},
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setTopAgents(data?.getAgents?.list);
+			setTopAuthors(data?.getAuthors?.list);
 		}
 	});
-	console.log("topAgents+++", topAgents);
 	/** HANDLERS **/
 
 	if (device === 'mobile') {
@@ -44,7 +43,7 @@ const TopAgents = (props: TopAgentsProps) => {
 			<Stack className={'top-agents'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Top Agents</span>
+						<span>Top Authors</span>
 					</Stack>
 					<Stack className={'wrapper'}>
 						<Swiper
@@ -54,10 +53,10 @@ const TopAgents = (props: TopAgentsProps) => {
 							spaceBetween={29}
 							modules={[Autoplay]}
 						>
-							{[1,2,3,4,5].map((ele, index) => {
+							{topAuthors.map((author: Member) => {
 								return (
-									<SwiperSlide className={'top-agents-slide'} key={index}>
-										<TopAgentCard />
+									<SwiperSlide className={'top-agents-slide'} key={author?._id}>
+										<TopAgentCard author={author} />
 									</SwiperSlide>
 								);
 							})}
@@ -72,12 +71,12 @@ const TopAgents = (props: TopAgentsProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Top Agents</span>
-							<p>Our Top Agents always ready to serve you</p>
+							<span>Top Authors</span>
+							<p>Our Top Authors are always humble</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								<span>See All Agents</span>
+								<span>See All Authors</span>
 								<img src="/img/icons/rightup.svg" alt="" />
 							</div>
 						</Box>
@@ -97,10 +96,10 @@ const TopAgents = (props: TopAgentsProps) => {
 									prevEl: '.swiper-agents-prev',
 								}}
 							>
-								{[1,2,3,4,5].map((ele, index) => {
+								{topAuthors.map((author: Member) => {
 									return (
-										<SwiperSlide className={'top-agents-slide'} key={index}>
-											<TopAgentCard />
+										<SwiperSlide className={'top-agents-slide'} key={author?._id}>
+											<TopAgentCard author={author} />
 										</SwiperSlide>
 									);
 								})}

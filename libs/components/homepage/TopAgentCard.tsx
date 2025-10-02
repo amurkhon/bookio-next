@@ -1,37 +1,47 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Member } from '../../types/member/member';
 
-interface TopAgentProps {
-	agent: Member;
+interface TopAuthorProps {
+	author: Member;
 }
-const TopAgentCard = () => {
+const TopAgentCard = (props: TopAuthorProps) => {
+	const { author } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	// const agentImage = agent?.memberImage
-	// 	? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${agent?.memberImage}`
-	// 	: '/img/profile/defaultUser.svg';
+	const agentImage = author?.memberImage
+		? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${author?.memberImage}`
+		: '/img/profile/defaultUser.svg';
 
 	/** HANDLERS **/
+
+	const pushAuthorDetailHandler = async (memberId: string | undefined) => {
+		await router.push({pathname: '/agent/detail', query: {agentId: memberId}});
+	};
 
 	if (device === 'mobile') {
 		return (
 			<Stack className="top-agent-card">
-				<img src={'/img/profile/girl.svg'} alt="" />
+				<img src={agentImage} alt="" />
 
-				<strong>Emma Watson</strong>
+				<strong>{author?.memberNick}</strong>
 				<span>Author</span>
 			</Stack>
 		);
 	} else {
 		return (
 			<Stack className="top-agent-card">
-				<img src={'/img/profile/girl.svg'} alt="" />
+				<Box 
+					className={'img-box'}
+					onClick={() => {pushAuthorDetailHandler(author?._id)}}
+				>
+					<img src={agentImage} alt="" />
+				</Box>
 				<span className='gradient'></span>
 
-				<strong>Emma Watson</strong>
+				<strong>{author?.memberNick}</strong>
 				<span>Author</span>
 			</Stack>
 		);

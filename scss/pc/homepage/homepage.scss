@@ -45,6 +45,19 @@
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: center;
+			span {
+				color: #181a20;
+				font-family: $font;
+				font-size: 34px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 150%;
+				letter-spacing: -0.646px;
+				text-transform: capitalize;
+				&.white {
+					color: #ffffff;
+				}
+			}
 			.left {
 				width: 30%;
 				display: flex;
@@ -314,7 +327,7 @@
 						background: #000000;
 					}
 					.swiper-popular-pagination {
-						width: 5%;
+						width: auto;
 					}
 					.swiper-popular-next {
 						margin-left: 20px;
@@ -843,6 +856,7 @@
 							cursor: pointer;
 							align-items: center;
 							span {
+								width: 100px;
 								color: #181a20;
 								font-family: $font;
 								font-size: 15px;
@@ -861,22 +875,14 @@
 				}
 				.community-main {
 					width: 100%;
-					margin-top: 60px;
+					padding: 50px;
 					display: flex;
 					flex-direction: row;
 					flex-wrap: wrap;
-					justify-content: start;
-
-					.card1 {
-						width: 700px;
-					}
-
-					.card2 {
-						width: 700px;
-					}
+					justify-content: space-evenly;
 
 					.card {
-						width: 405px;
+						width: 100%;
 						height: auto;
 						margin-right: 28px;
 						background-color: #f8ebe5;

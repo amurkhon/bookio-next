@@ -131,7 +131,7 @@ const TopCategories = (props: TopCategoryBooks) => {
                             );
                         })}
                     </Stack>
-                    <Button className={'main-button'} variant={'outlined'}>View More</Button>
+                    <Button className={'main-button'} variant={'outlined'} href={'/books'}>View More</Button>
                 </Stack>
             </Stack>
         );

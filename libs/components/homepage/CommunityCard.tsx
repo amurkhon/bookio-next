@@ -19,22 +19,26 @@ import ShareIcon from '@mui/icons-material/Share';
 
 import Menu from '@mui/joy/Menu';
 import MenuItem from '@mui/joy/MenuItem';
+import { useRouter } from 'next/router';
 
 interface CommunityCardProps {
 	key: string;
-	// vertical: boolean;
-	// article: BoardArticle;
-	// index: number;
+	article: BoardArticle;
 }
 
 const CommunityCard = (props: CommunityCardProps) => {
-	const {key} = props;
+	const {key, article} = props;
+	const router = useRouter();
 	const device = useDeviceDetect();
-	// const articleImage = article?.articleImage
-	// 	? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${article?.articleImage}`
-	// 	: '/img/event.svg';
+	const articleImage = article?.articleImage
+		? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${article?.articleImage}`
+		: '/img/event.svg';
 
-	console.log("key: ", key);
+
+	/* Handlers */
+	const pushDetailHandler = async (propertyId: string, propertyCat: string) => {
+        await router.push({pathname: '/community/detail', query: {articleCategory: article?.articleCategory, id: propertyId}});
+    };
 
 	if (device === 'mobile') {
 		return <div>COMMUNITY CARD (MOBILE)</div>;
@@ -42,11 +46,11 @@ const CommunityCard = (props: CommunityCardProps) => {
 		return (
 				<>
 					<CssVarsProvider>
-						<Card className={`card`} color="neutral" variant="plain" sx={{width: 420}}>
+						<Card id={`card${key}`} className={`card`} color="neutral" variant="plain" sx={{width: 420}}>
 							<CardOverflow>
 								<AspectRatio ratio="1.5">
 									<img
-										src='/img/property/sub4.png'
+										src={articleImage}
 										alt=""
 									/>
 								</AspectRatio>
@@ -55,18 +59,28 @@ const CommunityCard = (props: CommunityCardProps) => {
 								<Stack className={'meta-info'}>
 									<Box className={'info'}>
 										<PersonIcon className={'icon'} />
-										By User
+										By {article?.memberData?.memberNick}
 									</Box>
 									<Box className={'info'}>
 										<ForumIcon className={'icon'} />
-										2 Comments
+										{article?.articleComments} Comments
 									</Box>
 								</Stack>
-								<Typography>
-									Lorem ipsum dolor a amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et dolore magna aliqua.
+								<Typography size={'large'}>
+									{article?.articleTitle}
 								</Typography>
-								<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "20px",marginTop:"20px", height: "3px", backgroundColor: "#bd7579"}} />
-								<Button className={'button'} sx={{width: "50%",backgroundColor: "#d16655", color: 'white'}} size={'lg'} endDecorator={<KeyboardArrowRight />} color={'#2e4a5b'}>
+								<Typography variant={'h2'}>
+									{article?.articleContent.slice(0, 35)}...
+								</Typography>
+								<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
+								<Button 
+									className={'button'} 
+									sx={{width: "50%",backgroundColor: "#d16655", color: 'white'}} 
+									size={'lg'} 
+									endDecorator={<KeyboardArrowRight />} 
+									color={'#2e4a5b'}
+									onClick={() => {pushDetailHandler(article?._id, article?.articleCategory)}}
+								>
 									Read More
 								</Button>
 							</CardContent>

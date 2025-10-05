@@ -150,7 +150,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 						</Stack>
 						<Stack className="main-config" mb={'76px'}>
 							<Box component={'div'} className={'right'}>
-								<Typography>Showing 1-3 of 34 Results</Typography>
+								<Typography>Showing 1-{9 > total ? total : 9} of {total} Results</Typography>
 								<Stack className={'additional-func'}>
 									<span>Sort by</span>
 									<div>
@@ -193,14 +193,16 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 								</Stack>
 							</Box>
 							<Stack className={'list-config'}>
-								{[1,2,3,4].length === 0 ? (
+								{properties.length === 0 ? (
 									<div className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
 										<p>No Properties found!</p>
 									</div>
 								) : (
-									[1,2,3,4,5,6,7,8,9].map((ele, index) => {
-										return (!propertyColumn ? <PropertyCard key={index} /> : <ColumnPropertyCard />);
+									properties.map((property: Property) => {
+										return (!propertyColumn ? 
+										<PropertyCard likePropertyHandler={likePropertyHandler} property={property} key={property?._id} /> 
+											: <ColumnPropertyCard likePropertyHandler={likePropertyHandler} property={property} key={property?._id} />);
 									})
 								)}
 							</Stack>
@@ -240,13 +242,13 @@ PropertyList.defaultProps = {
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {
-			squaresRange: {
+			pagesRange: {
 				start: 0,
-				end: 500,
+				end: 1000,
 			},
 			pricesRange: {
 				start: 0,
-				end: 2000000,
+				end: 200,
 			},
 		},
 	},

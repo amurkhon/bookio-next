@@ -5,31 +5,35 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Chip from '@mui/joy/Chip';
 import IconButton from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
+import Link from 'next/link';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
-import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Star from '@mui/icons-material/Star';
 import { Button, CssVarsProvider } from '@mui/joy';
 import { Property } from '../../types/property/property';
+import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../config';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '../../../apollo/store';
 
-type RentalCardProps = {
-  product: Property;
-  category: React.ReactNode;
-  image: string;
-  liked?: boolean;
-  rareFind?: boolean;
-  title: React.ReactNode;
-  price: number;
+type ColumnCardProps = {
+  property: Property;
+  likePropertyHandler?: any;
+  myFavorites?: boolean;
+	// recentlyVisited?: boolean;
 };
 
-export default function ColumnPropertyCard() {
-  // const { category, title, rareFind = false, liked = false, image, price, product } = props;
+export default function ColumnPropertyCard(props: ColumnCardProps) {
+  const { property, likePropertyHandler, myFavorites } = props;
   const [isLiked, setIsLiked] = React.useState(true);
+  const user = useReactiveVar(userVar);
+  const imagePath: string = property?.propertyImages[0]
+      ? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`
+      : '/img/banner/header1.svg';
   return (
     <CssVarsProvider>
       <Card
@@ -59,7 +63,14 @@ export default function ColumnPropertyCard() {
             },
           }}
         >
-          <img alt="" src={'/img/property/under-sky.webp'} />
+          <Link
+						href={{
+							pathname: '/books/detail',
+							query: {id: property?._id},
+						}}
+					>
+						<img src={imagePath} alt="" />
+					</Link>
             <Stack
               direction="row"
               sx={{
@@ -87,30 +98,29 @@ export default function ColumnPropertyCard() {
           <Stack
             spacing={1}
             direction="row"
-            sx={{ justifyContent: 'flex', alignItems: 'flex-start' }}
+            sx={{ justifyContent: 'flex', alignItems: 'center' }}
           >
             <div style={{flexGrow: '4'}}>
-              <Typography level="title-md">
-                <Link
-                  overlay
-                  underline="none"
-                  href="#interactive-card"
-                  sx={{ color: 'text.primary' }}
-                >
-                  Title
-                </Link>
+              <Typography level="title-md" sx={{ color: 'text.primary' }}>
+                {property?.propertyTitle}
               </Typography>
-              <Typography level="body-sm">Category</Typography>
+              <Typography level="body-sm">{property?.propertyCategory}</Typography>
             </div>
-            <IconButton
-              variant="plain"
-              size="sm"
-              color={isLiked ? 'danger' : 'neutral'}
-              onClick={() => setIsLiked((prev) => !prev)}
-              sx={{ borderRadius: '50%', marginright: '5px' }}
+            <IconButton 
+              variant='plain' 
+              size='sm' 
+              color={'default'} 
+              onClick={() => likePropertyHandler(user, property?._id)}
             >
-              <FavoriteRoundedIcon />
-            </IconButton>
+              {myFavorites ? (
+                  <FavoriteIcon color="danger" />
+                ) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                  <FavoriteIcon color="danger" />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
+              </IconButton>
+              <Typography className="view-cnt">{property?.propertyLikes}</Typography>
             <IconButton
               variant="plain"
               size="sm"
@@ -118,6 +128,7 @@ export default function ColumnPropertyCard() {
             >
               <VisibilityIcon />
             </IconButton>
+            <Typography className="view-cnt">{property?.propertyViews}</Typography>
             <IconButton
               variant="plain"
               size="sm"
@@ -125,6 +136,7 @@ export default function ColumnPropertyCard() {
             >
               <CommentIcon />
             </IconButton>
+            <Typography className="view-cnt">{property?.propertyComments}</Typography>
           </Stack>
           <Stack
             spacing="0.25rem 1rem"
@@ -132,16 +144,13 @@ export default function ColumnPropertyCard() {
             useFlexGap
             sx={{ flexWrap: 'wrap', my: 0.25 }}
           >
-            <Typography level="body-xs" >
-              by Amurkhon (Author)
+            <Typography level="body-xs">
+              by {property?.propertyAuthor} (Author)
             </Typography>
           </Stack>
           <Stack>
             <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Quo distinctio eveniet, esse nemo labore cupiditate explicabo, ratione a, 
-              asperiores ducimus pariatur vitae animi repellendus. 
-              Temporibus soluta eaque dolor sapiente ullam!
+              {property?.propertyDesc?.slice(0,350)}...
             </Typography>
           </Stack>
           <Stack direction="row" sx={{ slefAlign: 'flex-end' }}>
@@ -161,15 +170,22 @@ export default function ColumnPropertyCard() {
               4.0
             </Typography>
             <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: 'right' }}>
-              <strong>$20</strong> 
+              <strong>$20</strong>
               <Typography level="body-md">
-                <Button 
-                  variant='outlined' 
-                  color='success' 
-                  style={{marginLeft: "10px"}}
+                <Link
+                  href={{
+                    pathname: '/books/detail',
+                    query: {id: property?._id},
+                  }}
                 >
-                  Add to card
-                </Button>
+                  <Button 
+                    variant='outlined' 
+                    color='success' 
+                    style={{marginLeft: "10px"}}
+                  >
+                    Buy
+                  </Button>
+                </Link>
               </Typography>
             </Typography>
           </Stack>

@@ -309,8 +309,14 @@
 						}
 						.horizontal-card {
 							height: 250px;
+							img {
+								width: 100%;
+								height: 100%;
+							}
 							&:hover {
 								img {
+									width: 100%;
+									height: 100%;
 									transform: scale(1.1);
 									transition-duration: 2s;
 								}

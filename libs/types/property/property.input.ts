@@ -25,6 +25,7 @@ interface PISearch {
 	options?: string[];
 	periodsRange?: PeriodsRange;
 	pagesRange?: Range;
+	pricesRange?:Range;
 	text?: string;
 }
 

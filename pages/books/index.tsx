@@ -18,6 +18,7 @@ import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import AppsIcon from '@mui/icons-material/Apps';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import ColumnPropertyCard from '../../libs/components/property/HorizontalPropertyCard';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -36,6 +37,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [sortingOpen, setSortingOpen] = useState(false);
+	const [propertyColumn, setPropertyColumn] = useState<boolean>(false)
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
@@ -127,6 +129,14 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		setAnchorEl(null);
 	};
 
+	const changeProductsRow = () => {
+        setPropertyColumn(true);
+    };
+
+	const changeProductsColumn = () => {
+        setPropertyColumn(false);
+    };
+
 	if (device === 'mobile') {
 		return <h1>PROPERTIES MOBILE</h1>;
 	} else {
@@ -174,8 +184,12 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 											</MenuItem>
 										</Menu>
 									</div>
-									<AppsIcon sx={{marginRight: '5px'}} />
-									<ViewHeadlineIcon />
+									<Button onClick={changeProductsColumn}>
+										<AppsIcon sx={{marginRight: '5px'}} />
+									</Button>
+									<Button onClick={changeProductsRow}>
+										<ViewHeadlineIcon />
+									</Button>
 								</Stack>
 							</Box>
 							<Stack className={'list-config'}>
@@ -186,7 +200,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									[1,2,3,4,5,6,7,8,9].map((ele, index) => {
-										return <PropertyCard key={index} />;
+										return (!propertyColumn ? <PropertyCard key={index} /> : <ColumnPropertyCard />);
 									})
 								)}
 							</Stack>

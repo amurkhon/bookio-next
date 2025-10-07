@@ -35,6 +35,7 @@ const Filter = (props: FilterType) => {
 
 	const [value1, setValue1] = React.useState<number[]>([20, 37]);
 	 const [val, setVal] = React.useState<number>(60);
+	 const [propertyCategory, setPropertyCategory] = useState<PropertyCategory[]>(Object.values(PropertyCategory));
 	 const [showMore, setShowMore] = useState<boolean>(false);
 	 const [searchText, setSearchText] = useState<string>('');
 
@@ -92,6 +93,55 @@ const Filter = (props: FilterType) => {
 	}, [searchFilter]);
 
 	/** HANDLERS **/
+
+	const propertyCategorySelectHandler = useCallback(
+		async (e: any) => {
+			try {
+				const isChecked = e.target.checked;
+				const value = e.target.value;
+				if (isChecked) {
+					await router.push(
+						`/books?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), value] },
+						})}`,
+						`/books?input=${JSON.stringify({
+							...searchFilter,
+							search: { ...searchFilter.search, propertyCategory: [...(searchFilter?.search?.propertyCategory || []), value] },
+						})}`,
+						{ scroll: false },
+					);
+				} else if (searchFilter?.search?.propertyCategory?.includes(value)) {
+					await router.push(
+						`/books?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: string) => item !== value),
+							},
+						})}`,
+						`/books?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								propertyCategory: searchFilter?.search?.propertyCategory?.filter((item: string) => item !== value),
+							},
+						})}`,
+						{ scroll: false },
+					);
+				}
+
+				if (searchFilter?.search?.propertyCategory?.length == 0) {
+					alert('error');
+				}
+
+				console.log('propertyCategorySelectHandler:', e.target.value);
+			} catch (err: any) {
+				console.log('ERROR, propertyCategorySelectHandler:', err);
+			}
+		},
+		[searchFilter],
+	);
 
 	const handleChange1 = (event: Event, newValue: number[], activeThumb: number) => {
 		if (activeThumb === 0) {
@@ -457,72 +507,26 @@ const Filter = (props: FilterType) => {
 						<Divider variant={'string'} sx={{width: '30px', height: '7px', backgroundColor: '#d16655', borderRadius: '5px'}} textAlign={'left'} />
 					</Box>
 					<Stack className={'category-name-box'}>
-						<Box className={'category-name'}>
-							<Typography>
-								Novel
-							</Typography>
-							<Checkbox value={PropertyCategory.NOVEL} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Business
-							</Typography>
-							<Checkbox value={PropertyCategory.BUSINESS} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Fiction
-							</Typography>
-							<Checkbox value={PropertyCategory.FICTION} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Science
-							</Typography>
-							<Checkbox value={PropertyCategory.SCIENCE} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Medical
-							</Typography>
-							<Checkbox value={PropertyCategory.MEDICAL} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Computers
-							</Typography>
-							<Checkbox value={PropertyCategory.COMPUTERS} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Cooking
-							</Typography>
-							<Checkbox value={PropertyCategory.COOKING} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Drama
-							</Typography>
-							<Checkbox value={PropertyCategory.DRAMA} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Psychology
-							</Typography>
-							<Checkbox value={PropertyCategory.PSYCHOLOGY} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Nature
-							</Typography>
-							<Checkbox value={PropertyCategory.NATURE} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
-						<Box className={'category-name'}>
-							<Typography>
-								Romance
-							</Typography>
-							<Checkbox value={PropertyCategory.ROMANCE} icon={<TaskAltIcon className={'icon-default'} />} checkedIcon={<TaskAltIcon className={'icon-checked'} />} />
-						</Box>
+						{propertyCategory.map((category: string) => {
+							return (
+								<Box className={'category-name'}>
+									<label htmlFor={category} style={{ cursor: 'pointer' }}>
+										<Typography className="property-type">{category}</Typography>
+									</label>
+									<Checkbox
+										id={category}
+										className="property-checkbox"
+										color="default"
+										size="small"
+										value={category}
+										checked={(searchFilter?.search?.propertyCategory || []).includes(category as PropertyCategory)}
+										onChange={propertyCategorySelectHandler} 
+										icon={<TaskAltIcon className={'icon-default'} />} 
+										checkedIcon={<TaskAltIcon className={'icon-checked'} />} 
+									/>
+								</Box>
+							);
+						})}
 					</Stack>
 				</Stack>
 			</Stack>

@@ -7,39 +7,19 @@
    .container {
      align-items: center;
      .main {
-       width: 1200px;
-       height: 900px;
-       display: flex;
-       flex-direction: row;
-       border-radius: 12px 0px 0px 12px;
+       width: 700px;
+       height: 700px;
+       border-radius: 12px 12px 12px 12px;
        background: #FFF;
-       box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+       box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.2);
+       align-items: center;
        .left {
-         width: 50%;
+         width: 100%;
          height: 100%;
          display: flex;
          flex-direction: column;
          align-items: center;
          justify-content: center;
-         .logo {
-           display: flex;
-           flex-direction: row;
-           align-items: center;
-           img {
-             width: 40px;
-             height: 40px;
-           }
-           span {
-             margin-left: 10px;
-             font-family: $font ;
-             font-size: 22px;
-             font-style: normal;
-             font-weight: 600;
-             line-height: normal;
-             letter-spacing: 0.44px;
-             color:#181A20;
-           }
-         }
          .info {
            margin-top: 30px;
            display: flex;
@@ -164,7 +144,7 @@
            }
          }
          .ask-info {
-           margin-top: 90px;
+           margin-top: 30px;
            p {
              font-family: $font;
              font-size: 20px;
@@ -181,12 +161,6 @@
              }
            }
          }
-       }
-       .right {
-         width: 50%;
-         height: 100%;
-         background-image: url("/img/banner/joinBg.svg");
-         background-size: cover;
        }
      }
    }

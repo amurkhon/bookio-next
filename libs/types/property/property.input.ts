@@ -1,4 +1,4 @@
-import { PropertyCategory, PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+import { PropertyCategory, PropertyLanguage, PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
 import { Direction } from '../../enums/common.enum';
 
 export interface PropertyInput {
@@ -22,6 +22,7 @@ interface PISearch {
 	memberId?: string;
 	propertyCategory?: PropertyCategory[];
 	typeList?: PropertyType[];
+	languageList?: PropertyLanguage[]
 	options?: string[];
 	periodsRange?: PeriodsRange;
 	pagesRange?: Range;

@@ -35,3 +35,9 @@ export enum PropertyType {
 	HARDCOVER = 'HARDCOVER',
 	FULL = 'FULL',
 }
+
+export enum PropertyLanguage {
+	ENGLISH = 'English',
+	KOREAN = 'Korean',
+	UZBEK= 'Uzbek',
+}

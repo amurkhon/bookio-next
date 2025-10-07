@@ -243,7 +243,7 @@ PropertyList.defaultProps = {
 		direction: 'DESC',
 		search: {
 			pagesRange: {
-				start: 0,
+				start: 60,
 				end: 1000,
 			},
 			pricesRange: {

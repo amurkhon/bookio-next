@@ -12,22 +12,22 @@ import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
 
 interface AgentCardProps {
-	agent: any;
+	author: any;
 	likePropertyHandler: any;
 }
 
 const AgentCard = (props: AgentCardProps) => {
-	const { agent, likePropertyHandler } = props;
+	const { author, likePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
-	const imagePath: string = agent?.memberImage
-		? `${NEXT_PUBLIC_REACT_APP_API_URL}/${agent?.memberImage}`
+	const imagePath: string = author?.memberImage
+		? `${NEXT_PUBLIC_REACT_APP_API_URL}/${author?.memberImage}`
 		: '/img/profile/defaultUser.svg';
 	
 	/* Handlers */
 	const pushDetailHandler = async (memberId: string) => {
-		await router.push({pathname: '/agent/detail', query: {authorId: memberId}});
+		await router.push({pathname: '/author/detail', query: {authorId: memberId}});
 	};
 
 	if (device === 'mobile') {
@@ -44,20 +44,20 @@ const AgentCard = (props: AgentCardProps) => {
 						backgroundPosition: 'center',
 						backgroundRepeat: 'no-repeat',
 					}}
-					onClick={() => {pushDetailHandler(agent?._id)}}
+					onClick={() => {pushDetailHandler(author?._id)}}
 				>
-					<div>{agent?.memberProperties} properties</div>
+					<div>{author?.memberProperties} properties</div>
 				</Box>
 
 				<Stack className={'agent-desc'}>
 					<Box component={'div'} className={'agent-info'}>
 						<Link
 							href={{
-								pathname: '/agent/detail',
+								pathname: '/author/detail',
 								query: { authorId: 'id' },
 							}}
 						>
-							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
+							<strong>{author?.memberFullName ?? author?.memberNick}</strong>
 						</Link>
 						<span>Agent</span>
 					</Box>
@@ -65,15 +65,15 @@ const AgentCard = (props: AgentCardProps) => {
 						<IconButton color={'default'}>
 							<RemoveRedEyeIcon />
 						</IconButton>
-						<Typography className="view-cnt">{agent?.memberViews}</Typography>
-						<IconButton color={'default'} onClick={() => likePropertyHandler(user, agent?._id)}>
-							{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
+						<Typography className="view-cnt">{author?.memberViews}</Typography>
+						<IconButton color={'default'} onClick={() => likePropertyHandler(user, author?._id)}>
+							{author?.meLiked && author?.meLiked[0]?.myFavorite ? (
 								<FavoriteIcon color={'primary'} />
 							) : (
 								<FavoriteBorderIcon />
 							)}
 						</IconButton>
-						<Typography className="view-cnt">{agent?.memberLikes}</Typography>
+						<Typography className="view-cnt">{author?.memberLikes}</Typography>
 					</Box>
 				</Stack>
 			</Stack>

@@ -163,7 +163,7 @@ const Top = () => {
 				<Link href={'/property'}>
 					<div>{t('Properties')}</div>
 				</Link>
-				<Link href={'/agent'}>
+				<Link href={'/author'}>
 					<div> {t('Agents')} </div>
 				</Link>
 				<Link href={'/community?articleCategory=FREE'}>
@@ -204,7 +204,7 @@ const Top = () => {
 								<Link href={'/books'}>
 									<div>{t('Books')}</div>
 								</Link>
-								<Link href={'/agent'}>
+								<Link href={'/author'}>
 									<div> {t('Authors')} </div>
 								</Link>
 								<Link href={'/community?articleCategory=FREE'}>

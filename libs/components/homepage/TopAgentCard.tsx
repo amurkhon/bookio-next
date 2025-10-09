@@ -18,7 +18,7 @@ const TopAgentCard = (props: TopAuthorProps) => {
 	/** HANDLERS **/
 
 	const pushAuthorDetailHandler = async (memberId: string | undefined) => {
-		await router.push({pathname: '/agent/detail', query: {agentId: memberId}});
+		await router.push({pathname: '/author/detail', query: {authorId: memberId}});
 	};
 
 	if (device === 'mobile') {

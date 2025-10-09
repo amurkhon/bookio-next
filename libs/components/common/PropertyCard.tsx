@@ -32,7 +32,7 @@ const PropertyCard = (props: PropertyCardType) => {
 	/* Handlers*/
 
 	const pushDetailHandler = async (memberId: string) => {
-		await router.push({pathname: '/agent/detail', query: {authorId: memberId}});
+		await router.push({pathname: '/author/detail', query: {authorId: memberId}});
 	};
 
 	if (device === 'mobile') {

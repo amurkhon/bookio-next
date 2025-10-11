@@ -338,8 +338,8 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										className="description-input"
 										placeholder={'Price'}
 										value={insertPropertyData.propertyPrice}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyPrice: Number(value) })
+										onChange={({ target: { valueAsNumber } }) =>
+											setInsertPropertyData({ ...insertPropertyData, propertyPrice: valueAsNumber })
 										}
 									/>
 								</Stack>
@@ -496,8 +496,8 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										className="description-input"
 										placeholder={'Count'}
 										value={insertPropertyData.propertyPages}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyPages: Number(value) })
+										onChange={({ target: { valueAsNumber } }) =>
+											setInsertPropertyData({ ...insertPropertyData, propertyPages: valueAsNumber })
 										}
 									/>
 								</Stack>

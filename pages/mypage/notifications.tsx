@@ -11,13 +11,9 @@ import Radio from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import { CssVarsProvider, List } from "@mui/joy";
-
-import AspectRatio from '@mui/joy/AspectRatio';
-import Link from '@mui/joy/Link';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
+import { useRef } from "react";
+import CloseIcon from '@mui/icons-material/Close';
 
 
 
@@ -25,6 +21,7 @@ const Notification: NextPage = () => {
     const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
+    const scrollToRef = useRef();
 
     if(device === 'mobile') {
         return <div>Notifications</div>
@@ -101,58 +98,47 @@ const Notification: NextPage = () => {
                                 </RadioGroup>
                             </Box>
                         </CssVarsProvider>
+                        <Button variant={'outlined'} sx={{marginTop: '20px'}}>
+                            Select all as read
+                        </Button>
                         <Divider sx={{width: '100%', height: '1px', color: 'black', marginTop: '20px', marginBottom: '20px'}} />
                         <CssVarsProvider>
-                            <List>
-                                {[1,2,3,4,5,6,7].map((ele) => {
+                            <List className={'list'}>
+                                {[1,2,3,4,5,6,7,8,9].map((ele) => {
                                     return (
-                                        <Card
-                                            variant="outlined"
-                                            orientation="horizontal"
-                                            sx={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                width: '100%',
-                                                height: 70,
-                                                '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-                                            }}
-                                            >
-                                            <AspectRatio ratio="1" sx={{ width: 40, height: "100%", borderRadius: '100%' }}>
+                                        <Stack className={'list-item'}>
+                                            <Box className={'profile-img'}>
                                                 <img
-                                                src='/img/profile/girl.svg'
-                                                loading="lazy"
-                                                alt=""
-                                                style={{height: 40, borderRadius: '100%'}}
+                                                    src="/img/profile/girl.svg"
                                                 />
-                                            </AspectRatio>
-                                            <CardContent>
-                                                <Typography level="title-lg" id="card-description">
-                                                Yosemite Park
+                                            </Box>
+                                            <Box className={'inform'}>
+                                                <Typography className={'title'}>
+                                                    Commented
                                                 </Typography>
-                                                <Typography
-                                                level="body-sm"
-                                                aria-describedby="card-description"
-                                                sx={{ mb: 1 }}
-                                                >
-                                                    <Link
-                                                        overlay
-                                                        underline="none"
-                                                        href="#interactive-card"
-                                                        sx={{ color: 'text.tertiary' }}
-                                                    >
-                                                        California, USA
-                                                    </Link>
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
+                                                <span style={{position: 'absolute', right: '0px', top:'0px'}}> 18:20, 29.09.2025</span>
+                                                <Typography>I liked your book because of its ...</Typography>
+                                            </Box>
+                                        </Stack>
                                     );
                                 })}
                             </List>
                         </CssVarsProvider>
                     </Stack>
                     <Stack className={'notification-detail'}>
-                        Detail
+                        <Stack className={'header'}>
+                            <Stack className={'notification-info'}>
+                                <img src="/img/profile/defaultUser.svg" alt="" />
+                                <Box>
+                                    <Typography>Notification Title</Typography>
+                                    <span>15:36, 23.06.2025</span>
+                                </Box>
+                            </Stack>
+                            <CloseIcon variant={'lg'} />
+                        </Stack>
+                        <Box className={'main-body'}>
+                            Full Stack Python kursi Django asoslari (YANGI) moduliga yangi Django yangi versiyalar bilan ishlash videodarsi qoʻshildi.
+                        </Box>
                     </Stack>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter, withRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { getJwtToken, logOut, updateUserInfo } from '../auth';
-import { Stack, Box, createTheme } from '@mui/material';
+import { Stack, Box, createTheme, List, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -21,6 +21,7 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../config';
+import zIndex from '@mui/material/styles/zIndex';
 
 const Top = () => {
 	const device = useDeviceDetect();
@@ -37,6 +38,14 @@ const Top = () => {
 	const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
 	const [hidden, setHidden] = useState(false);
 	const logoutOpen = Boolean(logoutAnchor);
+	const [anchorEl3, setAnchorEl3] = React.useState<null | HTMLElement>(null);
+	const openNot = Boolean(anchorEl3);
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		true ? router.push({pathname: '/mypage/notifications'}) : setAnchorEl3(event.currentTarget);
+	};
+	const handleCloseNot = () => {
+		setAnchorEl3(null);
+	};
 	
 
 	/** LIFECYCLES **/
@@ -259,7 +268,79 @@ const Top = () => {
 							</Box>
 							<LightModeIcon />
 							<div className={'lan-box'}>
-								{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+								{user?._id && 
+									<NotificationsOutlinedIcon 
+										id="basic-button"
+										aria-controls={openNot ? 'basic-menu' : undefined}
+										aria-haspopup="true"
+										aria-expanded={openNot ? 'true' : undefined}
+										onClick={handleClick} 
+										className={'notification-icon'} />
+								}
+								<StyledMenu
+									className="basic-menu"
+									anchorEl={anchorEl3}
+									open={openNot}
+									onClose={handleCloseNot}
+									sx={{width:'400px', height:'500px', top:'10px', borderRadius: '10px', position: 'absolute', zIndex:'100'}}
+								>
+									<List className={'list'}>
+										{[1,2,3,4,5,6,7,8,9].map((ele) => {
+											return (
+												<MenuItem onClick={handleCloseNot}>
+													<Stack 
+														className={'list-item'}
+														sx={{
+															width:'100%', 
+															height:'70px', 
+															padding:'10px',
+															display: 'flex',
+															flexDirection: 'row',
+															alignItems:'center',
+															cursor: 'pointer'
+														}}
+													>
+														<Box 
+															className={'profile-img'}
+															sx={{
+																width: '20%',
+																height: '100%',
+																borderRadius: '100%'
+															}}
+														>
+															<img
+																src="/img/profile/girl.svg"
+																style={{
+																	width: '50px',
+																	height: '50px',
+																	borderRadius: '100%'
+																}}
+															/>
+														</Box>
+														<Box 
+															className={'inform'}
+															sx={{
+																width:'80%',
+																position: 'relative'
+															}}
+														>
+															<span className={'title'} style={{fontWeight: '500'}}>
+																Commented
+															</span>
+															<span style={{fontSize: '12px',position: 'absolute', right: '0px', top:'0px'}}> 18:20, 29.09.2025</span>
+															<Typography variant={'h5'}>I liked your book because of its ...</Typography>
+														</Box>
+													</Stack>
+												</MenuItem>
+											);
+										})}
+									</List>
+									<Box sx={{ width:'330px', height: '40px', color: 'white',display: 'flex', justifyContent: 'center', position:'fixed', zIndex: '100', top: '442px'}}>
+										<Button variant={'contained'} color={'secondary'} sx={{color: 'white', heigth: '30px'}}>
+											See all notifications
+										</Button>
+									</Box>
+								</StyledMenu>
 								<Button
 									disableRipple
 									className="btn-lang"

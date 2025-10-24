@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { Stack } from '@mui/material';
@@ -20,6 +20,7 @@ import MemberFollowings from '../../libs/components/member/MemberFollowings';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
+import { getJwtToken, updateUserInfo } from '../../libs/auth';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -29,6 +30,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 
 const MyPage: NextPage = () => {
 	const device = useDeviceDetect();
+	const [isHydrated, setIsHydrated] = useState(false);
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
 	const category: any = router.query?.category ?? 'myProfile';
@@ -39,9 +41,22 @@ const MyPage: NextPage = () => {
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
 	/** LIFECYCLES **/
+
 	useEffect(() => {
-		if (!user._id) router.push('/').then();
-	}, [user]);
+	// Run once: attempt to rehydrate from token
+	const token = getJwtToken();
+	if (token) {
+		updateUserInfo(token); // fills userVar if valid
+	}
+	setIsHydrated(true);
+	}, []);
+
+	useEffect(() => {
+	// Run redirect only after hydration attempt is complete
+	if (isHydrated && !user?._id) {
+		router.push('/').then();
+	}
+	}, [isHydrated, user]);
 
 	/** HANDLERS **/
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {

@@ -23,9 +23,6 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const [updateMember] = useMutation(UPDATE_MEMBER);
 
 	/** LIFECYCLES **/
-	useEffect(() => {
-		if (!user._id) router.push('/').then();
-	}, [user]);
 
 	useEffect(() => {
 		setUpdateData({

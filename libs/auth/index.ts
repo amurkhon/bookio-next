@@ -150,6 +150,7 @@ export const updateUserInfo = (jwtToken: any) => {
 		memberViews: claims.memberViews,
 		memberWarnings: claims.memberWarnings,
 		memberBlocks: claims.memberBlocks,
+		memberMembership: claims.memberMembership,
 	});
 };
 
@@ -184,5 +185,6 @@ const deleteUserInfo = () => {
 		memberViews: 0,
 		memberWarnings: 0,
 		memberBlocks: 0,
+		memberMembership:false,
 	});
 };

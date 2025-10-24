@@ -83,8 +83,8 @@ export function NotificationMenu(props: NotificationMenu) {
     };
 
     const pushMemberHandler = async (memberId: string | undefined) => {
-		await router.push({pathname: '/member', query: {memberId: memberId}});
-	};
+      await router.push({pathname: '/member', query: {memberId: memberId}});
+    };
 
 
   return (

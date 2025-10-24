@@ -13,5 +13,5 @@ export interface NotificationInput {
 }
 
 export interface NotificationsInquiry {
-    status: NotificationStatus;
+    status?: NotificationStatus | null;
 }

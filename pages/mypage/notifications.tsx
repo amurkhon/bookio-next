@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import useDeviceDetect from "../../libs/hooks/useDeviceDetect";
-import { useReactiveVar } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { useRouter } from "next/router";
 import { userVar } from "../../apollo/store";
-import { Button, Divider, Stack } from "@mui/material";
+import { Button, Divider, Link, Stack } from "@mui/material";
 import withLayoutFull from "../../libs/components/layout/LayoutFull";
 
 import Box from '@mui/joy/Box';
@@ -12,16 +12,137 @@ import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import { CssVarsProvider, List } from "@mui/joy";
 import Typography from '@mui/joy/Typography';
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
+import { GET_NOTIFICATIONS } from "../../apollo/user/query";
+import { T } from "../../libs/types/common";
+import { Messages, NEXT_PUBLIC_REACT_APP_API_URL } from "../../libs/config";
+import { Notification } from "../../libs/types/notification/notification";
+import Moment from "react-moment";
+import { NotificationsInquiry } from "../../libs/types/notification/notification.input";
+import { NotificationStatus } from "../../libs/enums/notification.enum";
+import { sweetErrorHandling } from "../../libs/sweetAlert";
+import { UPDATE_NOTIFICATIONS_AS_READ } from "../../apollo/user/mutation";
+import { getJwtToken, updateUserInfo } from "../../libs/auth";
 
 
 
-const Notification: NextPage = () => {
+const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
     const device = useDeviceDetect();
+    const [isHydrated, setIsHydrated] = useState(false);
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
     const scrollToRef = useRef();
+    const [searchFilter, setSearchFilter] = useState<NotificationsInquiry>(
+        router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
+    );
+
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [total, setTotal] = useState<number>(0);
+
+
+    /* APOLLO REQUESTS*/
+
+    const [updateNotificationsAsRead] = useMutation(UPDATE_NOTIFICATIONS_AS_READ);
+    
+    const {
+        loading: getNotificationsLoading,
+        data: getNotificationsData,
+        error: getNotificationsError,
+        refetch: getNotificationsRefetch,
+    } = useQuery(
+        GET_NOTIFICATIONS,
+        {
+            fetchPolicy: "network-only",
+            variables: {input: searchFilter},
+            notifyOnNetworkStatusChange: true,
+            onCompleted: (data: T) => {
+                setNotifications(data?.getNotifications?.list);
+                setTotal(data?.getNotifications?.metaCounter[0]?.total);
+            }
+        }
+    );
+
+    /** LIFECYCLES **/
+    
+    useEffect(() => {
+        // Run once: attempt to rehydrate from token
+        const token = getJwtToken();
+        if (token) {
+            updateUserInfo(token); // fills userVar if valid
+        }
+        setIsHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        // Run redirect only after hydration attempt is complete
+        if (isHydrated && !user?._id) {
+            router.push('/').then();
+        }
+    }, [isHydrated, user]);
+
+
+    useEffect(() => {
+        if (router.query.input) {
+            const inputObj = JSON.parse(router?.query?.input as string);
+            setSearchFilter(inputObj);
+        }
+    }, [router]);
+
+    useEffect(() => {getNotificationsRefetch({input: searchFilter})}, [searchFilter]);
+
+    /* Haandlers */
+
+    const markHandler = async () => {
+        try {
+            if(!user._id) throw new Error(Messages.error2);
+            const result = confirm('Do you want to mark all as read?');
+    
+            if(result) {
+                await updateNotificationsAsRead({
+                    variables: {
+                        input: {
+                            status: NotificationStatus.WAIT,
+                        },
+                    },
+                });
+                await getNotificationsRefetch({input: { status: NotificationStatus.READ }});
+            } else {
+                return false;
+            }
+        } catch (err: any) {
+            sweetErrorHandling(err).then();
+        }
+    };
+
+    const pushMemberHandler = async (memberId: string | undefined) => {
+      await router.push({pathname: '/member', query: {memberId: memberId}});
+    };
+
+    const unreadNotificationsHandler = async () => {
+        searchFilter.status = NotificationStatus.WAIT;
+        setSearchFilter({ ...searchFilter });
+        await router.push(
+			`/mypage/notifications?input=${JSON.stringify(searchFilter)}`,
+			`/mypage/notifications?input=${JSON.stringify(searchFilter)}`,
+			{
+				scroll: false,
+			},
+		);
+        console.log("searchFilter unread button: ", searchFilter);
+    }
+
+    const allNotificationsHandler = async () => {
+        setSearchFilter({});
+        await router.push(
+			`/mypage/notifications`,
+			`/mypage/notifications`,
+			{
+				scroll: false,
+			},
+		);
+        console.log("searchFilter: ", searchFilter);
+    }
 
     if(device === 'mobile') {
         return <div>Notifications</div>
@@ -30,94 +151,105 @@ const Notification: NextPage = () => {
             <div className="notification-page" style={{marginTop: '150px', marginBottom: '50px'}}>
                 <div className="container">
                     <Stack className={'notification-list'}>
-                        <CssVarsProvider>
-                            <Box sx={{ width: 300 }}>
-                                <RadioGroup
-                                    className={'controller'}
-                                    aria-labelledby="storage-label"
-                                    defaultValue=""
-                                    size="sm"
-                                    sx={{ gap: 1.5 }}
-                                >
-                                    <Sheet key={'all'} sx={{ width: "80px", height: "40px", p: 1, borderRadius: 'md', boxShadow: 'sm' }}>
-                                        <Radio
-                                            label={`All`}
-                                            overlay
-                                            disableIcon
-                                            value={''}
-                                            slotProps={{
-                                                label: ({checked}: any) => ({
-                                                sx: {
-                                                    fontWeight: 'lg',
-                                                    fontSize: 'md',
-                                                    color: checked ? 'text.primary' : 'text.secondary',
-                                                },
-                                                }),
-                                                action: ({checked}: any) => ({
-                                                sx: (theme: any) => ({
-                                                    ...(checked && {
-                                                    '--variant-borderWidth': '2px',
-                                                    '&&': {
-                                                        // && to increase the specificity to win the base :hover styles
-                                                        borderColor: theme.vars.palette.primary[400],
-                                                    },
-                                                    }),
-                                                }),
-                                                }),
-                                            }}
-                                        />
-                                    </Sheet>
-                                    <Sheet key={'raed'} sx={{width: "80px", height: "40px", p: 1, borderRadius: 'md', boxShadow: 'sm' }}>
-                                        <Radio
-                                            label={`Unread`}
-                                            overlay
-                                            disableIcon
-                                            value={'WAIT'}
-                                            slotProps={{
-                                                label: ({checked}: any) => ({
-                                                sx: {
-                                                    fontWeight: 'lg',
-                                                    fontSize: 'md',
-                                                    color: checked ? 'text.primary' : 'text.secondary',
-                                                },
-                                                }),
-                                                action: ({checked}: any) => ({
-                                                sx: (theme: any) => ({
-                                                    ...(checked && {
-                                                    '--variant-borderWidth': '2px',
-                                                    '&&': {
-                                                        // && to increase the specificity to win the base :hover styles
-                                                        borderColor: theme.vars.palette.primary[400],
-                                                    },
-                                                    }),
-                                                }),
-                                                }),
-                                            }}
-                                        />
-                                    </Sheet>
-                                </RadioGroup>
-                            </Box>
-                        </CssVarsProvider>
-                        <Button variant={'outlined'} sx={{marginTop: '20px'}}>
-                            Select all as read
-                        </Button>
+                        <Box sx={{ width: "100%" }}>
+                            <CssVarsProvider>
+                            <RadioGroup
+                                aria-labelledby="storage-label"
+                                value={ router?.query?.input ? 'Unread' : 'All'}
+                                size="lg"
+                                sx={{ gap: 1.5 }}
+                                className={'controller'}
+                            >
+                            <Sheet className={'con-button'} onClick={allNotificationsHandler} key={'All'} sx={{ p: 2, borderRadius: 'md', boxShadow: 'sm' }}>
+                                <Radio
+                                className={'item'}
+                                label={`All`}
+                                overlay
+                                disableIcon
+                                value={'All'}
+                                slotProps={{
+                                    label: ({ checked }:any) => ({
+                                    sx: {
+                                        fontWeight: 'lg',
+                                        fontSize: 'md',
+                                        color: checked ? 'text.primary' : 'text.secondary',
+                                    },
+                                    }),
+                                    action: ({ checked }:any) => ({
+                                    sx: (theme: any) => ({
+                                        ...(checked && {
+                                        '--variant-borderWidth': '2px',
+                                        '&&': {
+                                            // && to increase the specificity to win the base :hover styles
+                                            borderColor: theme.vars.palette.primary[500],
+                                        },
+                                        }),
+                                    }),
+                                    }),
+                                }}
+                                />
+                            </Sheet>
+                            <Sheet className={'con-button'} onClick={unreadNotificationsHandler} key={'unread'} sx={{ p: 2, borderRadius: 'md', boxShadow: 'sm' }}>
+                                <Radio
+                                className={'item'}
+                                label={`Unread`}
+                                overlay
+                                disableIcon
+                                value={'Unread'}
+                                sx={{height: '20px'}}
+                                slotProps={{
+                                    label: ({ checked }: any) => ({
+                                    sx: {
+                                        height:'20px',
+                                        fontWeight: 'lg',
+                                        fontSize: 'md',
+                                        color: checked ? 'text.secondary' : 'text.primary',
+                                    },
+                                    }),
+                                    action: ({ checked }: any) => ({
+                                    sx: (theme: any) => ({
+                                        ...(checked && {
+                                        '--variant-borderWidth': '2px',
+                                        '&&': {
+                                            // && to increase the specificity to win the base :hover styles
+                                            borderColor: theme.vars.palette.primary[400],
+                                        },
+                                        }),
+                                    }),
+                                    }),
+                                }}
+                                />
+                            </Sheet>
+                            </RadioGroup>
+                            </CssVarsProvider>
+                        </Box>
+                        <Link href='#' underline="none" onClick={markHandler}>
+                            Mark all read
+                        </Link>
                         <Divider sx={{width: '100%', height: '1px', color: 'black', marginTop: '20px', marginBottom: '20px'}} />
                         <CssVarsProvider>
                             <List className={'list'}>
-                                {[1,2,3,4,5,6,7,8,9].map((ele) => {
+                                {notifications.map((notification: Notification) => {
+                                    const imagePath = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` ?
+                                        `${NEXT_PUBLIC_REACT_APP_API_URL}/${notification?.memberData?.memberImage}` : 
+                                        '/img/profile/defaultUser.svg';
                                     return (
                                         <Stack className={'list-item'}>
-                                            <Box className={'profile-img'}>
+                                            <Box className={'profile-img'} onClick={() => pushMemberHandler(notification?.memberData?._id)}>
                                                 <img
-                                                    src="/img/profile/girl.svg"
+                                                    src={imagePath}
                                                 />
                                             </Box>
                                             <Box className={'inform'}>
                                                 <Typography className={'title'}>
-                                                    Commented
+                                                    {notification?.notificationTitle}
                                                 </Typography>
-                                                <span style={{position: 'absolute', right: '0px', top:'0px'}}> 18:20, 29.09.2025</span>
-                                                <Typography>I liked your book because of its ...</Typography>
+                                                <span style={{position: 'absolute', right: '0px', top:'0px'}}>
+                                                    <Moment fromNow>{notification?.createdAt}</Moment>
+                                                </span>
+                                                <Typography>
+                                                    {notification?.notificationDesc}
+                                                </Typography>
                                             </Box>
                                         </Stack>
                                     );
@@ -146,4 +278,10 @@ const Notification: NextPage = () => {
     }
 }
 
-export default withLayoutFull(Notification);
+NotificationPage.defaultProps = {
+    initialInput: {
+
+	},
+};
+
+export default withLayoutFull(NotificationPage);

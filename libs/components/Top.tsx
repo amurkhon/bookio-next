@@ -52,6 +52,7 @@ const Top = () => {
 	const [anchorEl, setAnchorEl] = React.useState<any | HTMLElement>(null);
 	let open = Boolean(anchorEl);
 	const [bgColor, setBgColor] = useState<boolean>(false);
+	const [color, setColor] = useState<string>('');
 	const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
 	const [hidden, setHidden] = useState(false);
 	const logoutOpen = Boolean(logoutAnchor);
@@ -99,6 +100,9 @@ const Top = () => {
 		switch (router.pathname) {
 			case '/books/detail':
 				setBgColor(true);
+				break;
+			case '/mypage/notifications':
+				setColor('#f0e4e4ff');
 				break;
 			default:
 				break;
@@ -223,7 +227,7 @@ const Top = () => {
 	} else {
 		return (
 			<Stack className={'navbar'}>
-				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
+				<Stack sx={{backgroundColor: color}} className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
 						<Stack className={`main-info ${hidden ? 'hider-function' : ''} `} sx={{display: {hidden}}}>
 							<Box className={'info-box'}>

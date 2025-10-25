@@ -74,8 +74,8 @@ export function NotificationMenu(props: NotificationMenu) {
     setAnchorEl(null);
   };
 
-  const handleNotificationClick = (notification: Notification) => {
-    handleCloseMenu();
+  const handleNotificationClick = async (notificationId: string) => {
+    await router.push({pathname: '/mypage/notifications', query: {notificationId: notificationId}});
   };
 
     const pushNotificationsPageHandler = async () => {
@@ -146,7 +146,7 @@ export function NotificationMenu(props: NotificationMenu) {
             return (
               <ListItem 
                 key={notification._id} 
-                onClick={() => handleNotificationClick(notification)} 
+                onClick={() => handleNotificationClick(notification?._id)} 
                 disablePadding 
                 sx={{ 
                   cursor: 'pointer', 

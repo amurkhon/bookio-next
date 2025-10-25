@@ -40,12 +40,12 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [total, setTotal] = useState<number>(0);
     const [ notificationVar, setNotificationVar ] = useState<Notification>();
-    const [ notId, setNotId ] = useState<string>('');
+    const [ notId, setNotId ] = useState<string>(
+        `${router?.query?.notificationId}` ? `${router?.query?.notificationId}` : '');
 
     const image = `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` ?
         `${NEXT_PUBLIC_REACT_APP_API_URL}/${notificationVar?.memberData?.memberImage}` : 
         '/img/profile/defaultUser.svg';
-
 
     /* APOLLO REQUESTS*/
 
@@ -116,6 +116,9 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
 
     useEffect(() => {
         getNotificationRefetch({ input: notId });
+        if(notId === '') {
+            router.push({pathname: '/mypage/notifications'});
+        }
     }, [notId]);
 
     /* Haandlers */
@@ -180,9 +183,9 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
         console.log("searchFilter: ", searchFilter);
     }
 
-    const getNotificationHandler = (e: React.MouseEvent<HTMLElement>) => {
+    const getNotificationHandler = async (e: React.MouseEvent<HTMLElement>) => {
         setNotId(e.currentTarget.id);
-        console.log("notId: ", notId);
+        await router.push({pathname: '/mypage/notifications', query: {notificationId: e.currentTarget.id}});
     };
 
     if(device === 'mobile') {
@@ -318,7 +321,7 @@ const NotificationPage: NextPage = ({ initialInput, ...props }: any) => {
                                 {notificationVar?.notificationDesc}
                             </Box>
                             {
-                                notificationVar?.propertyId && notificationVar?.articleId ? '' : (
+                                !notificationVar?.propertyId && !notificationVar?.articleId ? '' : (
                                     <Box className={'link'} onClick={pushTargetHandler} id={notificationVar?.propertyId ? notificationVar?.propertyId : notificationVar?.articleId}>
                                         Click here to see {notificationVar?.notificationGroup === NotificationGroup.PROPERTY ? 'Property' : 'Article'}
                                     </Box>

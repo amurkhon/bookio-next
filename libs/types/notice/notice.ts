@@ -3,6 +3,7 @@ import { TotalCounter } from "../property/property";
 
 
 export interface Notice {
+    _id: string;
     noticeCategory: NoticeCategory;
     noticeStatus: NoticeStatus;
     noticeTitle: string;

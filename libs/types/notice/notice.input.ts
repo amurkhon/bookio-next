@@ -6,3 +6,13 @@ export interface NoticeInput {
     noticeTitle: string;
     noticeContent: string;
 }
+
+interface NISearch {
+    noticeCategory?: NoticeCategory;
+}
+
+export interface NoticesInquiry {
+    page: number;
+    limit: number;
+    search: NISearch;
+}

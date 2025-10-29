@@ -840,6 +840,8 @@ export const GET_NOTICES = gql`
 				noticeTitle
 				noticeContent
 				memberId
+				createdAt
+				updatedAt
 			}
 			metaCounter {
 				total

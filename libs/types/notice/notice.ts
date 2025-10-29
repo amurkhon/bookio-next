@@ -9,6 +9,8 @@ export interface Notice {
     noticeTitle: string;
     noticeContent: string;
     memberId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface Notices {

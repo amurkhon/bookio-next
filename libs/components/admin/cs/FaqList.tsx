@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import {
@@ -16,6 +16,9 @@ import {
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
+import { Notice, Notices } from '../../../types/notice/notice';
+import Moment from 'react-moment';
+import { NoticeStatus } from '../../../enums/notice.enum';
 
 interface Data {
 	category: string;
@@ -110,23 +113,25 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface FaqArticlesPanelListType {
 	dense?: boolean;
+	answers: Notice[];
 	membersData?: any;
 	searchMembers?: any;
 	anchorEl?: any;
 	handleMenuIconClick?: any;
 	handleMenuIconClose?: any;
-	generateMentorTypeHandle?: any;
+	updateNoticeHandler?: any;
 }
 
 export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 	const {
 		dense,
+		answers,
 		membersData,
 		searchMembers,
 		anchorEl,
 		handleMenuIconClick,
 		handleMenuIconClose,
-		generateMentorTypeHandle,
+		updateNoticeHandler,
 	} = props;
 	const router = useRouter();
 
@@ -141,15 +146,15 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{[1, 2, 3, 4, 5].map((ele: any, index: number) => {
+						{answers.map((faq: Notice, index: number) => {
 							const member_image = '/img/profile/defaultUser.svg';
 
 							let status_class_name = '';
 
 							return (
-								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell align="left">mb id</TableCell>
-									<TableCell align="left">member.mb_full_name</TableCell>
+								<TableRow hover key={faq?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+									<TableCell align="left">{faq?.noticeCategory}</TableCell>
+									<TableCell align="left">{faq?.noticeTitle}</TableCell>
 									<TableCell align="left" className={'name'}>
 										<Stack direction={'row'}>
 											<Link href={`/_admin/users/detail?mb_id=$'{member._id'}`}>
@@ -158,14 +163,16 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 												</div>
 											</Link>
 											<Link href={`/_admin/users/detail?mb_id=${'member._id'}`}>
-												<div>member.mb_nick</div>
+												<div>{faq?.memberData?.memberNick}</div>
 											</Link>
 										</Stack>
 									</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
+									<TableCell align="left">
+										<Moment format={'DD.MM.YYYY'}>{faq?.createdAt}</Moment>
+									</TableCell>
 									<TableCell align="center">
 										<Button onClick={(e: any) => handleMenuIconClick(e, index)} className={'badge success'}>
-											member.mb_type
+											{faq?.noticeStatus}
 										</Button>
 
 										<Menu
@@ -179,16 +186,21 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 											TransitionComponent={Fade}
 											sx={{ p: 1 }}
 										>
-											<MenuItem onClick={(e) => generateMentorTypeHandle('member._id', 'mentor', 'originate')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													MENTOR
-												</Typography>
-											</MenuItem>
-											<MenuItem onClick={(e) => generateMentorTypeHandle('member._id', 'user', 'remove')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													USER
-												</Typography>
-											</MenuItem>
+											{Object.values(NoticeStatus)
+												.filter((ele: string) => ele !== faq?.noticeStatus)
+												.map((status: string) => (
+													<MenuItem onClick={(e: any) => {updateNoticeHandler(
+														{
+															_id: faq?._id,
+															noticeStatus: status
+														}
+													);
+													}}>
+														<Typography variant={'subtitle1'} component={'span'}>
+															{status}
+														</Typography>
+													</MenuItem>
+												))}
 										</Menu>
 									</TableCell>
 								</TableRow>

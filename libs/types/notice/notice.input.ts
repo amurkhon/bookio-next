@@ -8,7 +8,7 @@ export interface NoticeInput {
 }
 
 interface NISearch {
-    noticeCategory?: NoticeCategory;
+    noticeCategory: NoticeCategory;
 }
 
 export interface NoticesInquiry {

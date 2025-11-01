@@ -371,3 +371,45 @@ mutation CreateNotice($input: NoticeInput!) {
         memberId
     }
 }`;
+
+export const UPDATE_NOTICE = gql`
+	mutation UpdateNotice($input: UpdateNotice!) {
+		updateNotice(input: $input) {
+			_id
+			noticeCategory
+			noticeStatus
+			noticeTitle
+			noticeContent
+			memberId
+			createdAt
+			updatedAt
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberProperties
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+		}
+	}
+`;

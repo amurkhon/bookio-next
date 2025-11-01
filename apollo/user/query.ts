@@ -835,6 +835,7 @@ export const GET_NOTICES = gql`
 	query GetNotices($input: NoticeInquiry!) {
 		getNotices(input: $input) {
 			list {
+				_id
 				noticeCategory
 				noticeStatus
 				noticeTitle
@@ -842,6 +843,33 @@ export const GET_NOTICES = gql`
 				memberId
 				createdAt
 				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProperties
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
 			}
 			metaCounter {
 				total

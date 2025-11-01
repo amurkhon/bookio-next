@@ -1,7 +1,7 @@
 import { NoticeCategory, NoticeStatus } from "../../enums/notice.enum";
 
 
-export interface NotificationUpdateInput {
+export interface NoticeUpdate {
     _id: string;
     noticeStatus: NoticeStatus;
     noticeCategory?: NoticeCategory;

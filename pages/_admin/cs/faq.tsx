@@ -13,13 +13,87 @@ import TablePagination from '@mui/material/TablePagination';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { FaqArticlesPanelList } from '../../../libs/components/admin/cs/FaqList';
+import { useMutation, useQuery } from '@apollo/client';
+import { Notice } from '../../../libs/types/notice/notice';
+import { GET_NOTICES } from '../../../apollo/user/query';
+import { NoticeCategory } from '../../../libs/enums/notice.enum';
+import { T } from '../../../libs/types/common';
+import { UPDATE_NOTICE } from '../../../apollo/user/mutation';
+import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
+import { sweetErrorHandling } from '../../../libs/sweetAlert';
 
 const FaqArticles: NextPage = (props: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
+	const [ answers, setAnswers ] = useState<Notice[]>([]);
+	const [total, setTotal] = useState<number>(0);
 
 	/** APOLLO REQUESTS **/
+
+	const [ updateNotice ] = useMutation(UPDATE_NOTICE);
+
+	const {
+		loading: getNoticesLoading,
+		data: getNoticesData,
+		error: getNoticesError,
+		refetch: getNoticesRefetch,
+	} = useQuery(
+		GET_NOTICES,
+		{
+			fetchPolicy: "network-only",
+			variables: {input: {
+				page: 1,
+				limit: 20,
+				search: {
+					noticeCategory: NoticeCategory.FAQ
+				}
+			}},
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setAnswers(data?.getNotices?.list);
+				setTotal(data?.getNotices?.metaCounter[0]?.total);
+			}
+		}
+	);
+	
 	/** LIFECYCLES **/
 	/** HANDLERS **/
+
+	const menuIconClickHandler = (e: any, index: number) => {
+		const tempAnchor = anchorEl.slice();
+		tempAnchor[index] = e.currentTarget;
+		setAnchorEl(tempAnchor);
+	};
+
+	const menuIconCloseHandler = () => {
+		setAnchorEl([]);
+	};
+
+	const updateNoticeHandler = async (updateData: NoticeUpdate) => {
+		try {
+			console.log("input: ", updateData);
+			await updateNotice(
+				{
+					variables: {
+						input: updateData,
+					},
+				},
+			);
+
+
+			menuIconCloseHandler();
+			await getNoticesRefetch({ input: 
+				{
+					page: 1,
+					limit: 20,
+					search: {
+						noticeCategory: NoticeCategory.FAQ
+					}
+				}
+			});
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	};
 
 	return (
 		// @ts-ignore
@@ -103,9 +177,10 @@ const FaqArticles: NextPage = (props: any) => {
 							// membersData={membersData}
 							// searchMembers={searchMembers}
 							anchorEl={anchorEl}
-							// handleMenuIconClick={handleMenuIconClick}
-							// handleMenuIconClose={handleMenuIconClose}
-							// generateMentorTypeHandle={generateMentorTypeHandle}
+							answers={answers}
+							handleMenuIconClick={menuIconClickHandler}
+							handleMenuIconClose={menuIconCloseHandler}
+							updateNoticeHandler={updateNoticeHandler}
 						/>
 
 						<TablePagination

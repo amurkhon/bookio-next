@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
-import { Box, Button, InputAdornment, Stack } from '@mui/material';
+import { Box, Button, InputAdornment, Stack, TextareaAutosize, TextField } from '@mui/material';
 import { List, ListItem } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -16,20 +16,29 @@ import { FaqArticlesPanelList } from '../../../libs/components/admin/cs/FaqList'
 import { useMutation, useQuery } from '@apollo/client';
 import { Notice } from '../../../libs/types/notice/notice';
 import { GET_NOTICES } from '../../../apollo/user/query';
-import { NoticeCategory } from '../../../libs/enums/notice.enum';
+import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
 import { T } from '../../../libs/types/common';
-import { UPDATE_NOTICE } from '../../../apollo/user/mutation';
+import { CREATE_NOTICE, UPDATE_NOTICE } from '../../../apollo/user/mutation';
 import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
-import { sweetErrorHandling } from '../../../libs/sweetAlert';
+import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../../libs/sweetAlert';
+import { NoticeInput, NoticesInquiry } from '../../../libs/types/notice/notice.input';
+import CloseIcon from '@mui/icons-material/Close';
 
-const FaqArticles: NextPage = (props: any) => {
+const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
 	const [ answers, setAnswers ] = useState<Notice[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
+	const [insertFaqData, setInsertFaqData] = useState<NoticeInput>(initialValues);
+	const [searchInquiryData, setSearchInquiryData] = useState<NoticesInquiry>(initialInquiry);
+	const [ open, setOpen ] = useState<boolean>(false);
+	const [tab, setTab ] = useState<string>('all');
+
 	/** APOLLO REQUESTS **/
 
 	const [ updateNotice ] = useMutation(UPDATE_NOTICE);
+
+	const [ createNotice ] = useMutation(CREATE_NOTICE);
 
 	const {
 		loading: getNoticesLoading,
@@ -40,13 +49,9 @@ const FaqArticles: NextPage = (props: any) => {
 		GET_NOTICES,
 		{
 			fetchPolicy: "network-only",
-			variables: {input: {
-				page: 1,
-				limit: 20,
-				search: {
-					noticeCategory: NoticeCategory.FAQ
-				}
-			}},
+			variables: {
+				input: searchInquiryData,
+			},
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
 				setAnswers(data?.getNotices?.list);
@@ -56,7 +61,50 @@ const FaqArticles: NextPage = (props: any) => {
 	);
 	
 	/** LIFECYCLES **/
+
+	useEffect(() => {
+		getNoticesRefetch({input: searchInquiryData});
+	}, [searchInquiryData]);
+
 	/** HANDLERS **/
+
+	const handleTabChange = (e: React.MouseEvent, tab: string) => {
+		setTab(tab);
+		if( tab === 'all' ) {
+			setSearchInquiryData(initialInquiry);
+		} else if ( tab === 'active') {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.FAQ, noticeStatus: NoticeStatus.ACTIVE }});
+		} else {
+			setSearchInquiryData({ ...searchInquiryData, search: {noticeCategory: NoticeCategory.FAQ, noticeStatus: NoticeStatus.DELETE }});
+		}
+	}
+
+	const doDisabledCheck = () => {
+		if (
+			insertFaqData.noticeTitle === '' ||
+			insertFaqData.noticeContent === ''
+			
+		) {
+			return true;
+		}
+	};
+
+	const insertInquiryHandler = useCallback(async () => {
+			try {
+				const result = await createNotice({
+					variables: {
+						input: insertFaqData,
+					},
+				});
+	
+				await sweetMixinSuccessAlert('Answer has been sent successfully.');
+				getNoticesRefetch({input: searchInquiryData});
+
+				setInsertFaqData(initialValues);
+			} catch (err: any) {
+				sweetErrorHandling(err).then();
+			}
+		}, [insertFaqData]);
 
 	const menuIconClickHandler = (e: any, index: number) => {
 		const tempAnchor = anchorEl.slice();
@@ -81,15 +129,7 @@ const FaqArticles: NextPage = (props: any) => {
 
 
 			menuIconCloseHandler();
-			await getNoticesRefetch({ input: 
-				{
-					page: 1,
-					limit: 20,
-					search: {
-						noticeCategory: NoticeCategory.FAQ
-					}
-				}
-			});
+			await getNoticesRefetch({ input: searchInquiryData });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
@@ -100,15 +140,55 @@ const FaqArticles: NextPage = (props: any) => {
 		<Box component={'div'} className={'content'}>
 			<Box component={'div'} className={'title flex_space'}>
 				<Typography variant={'h2'}>FAQ Management</Typography>
-				<Button
-					className="btn_add"
-					variant={'contained'}
-					size={'medium'}
-					// onClick={() => router.push(`/_admin/cs/faq_create`)}
-				>
-					<AddRoundedIcon sx={{ mr: '8px' }} />
-					ADD
-				</Button>
+				{ open ? (
+					<Stack className={'contact-main'}>
+						<Stack className={'head-items'}>
+							<Typography>
+								Create Answer
+							</Typography>
+							<CloseIcon onClick={() => {setOpen(false)}} className={'close-icon'} />
+						</Stack>
+						<Stack className={'inquiry-box'}>
+							<TextField
+								className={'title-input'}
+								type='text'
+								placeholder='Inquiry Title'
+								value={insertFaqData.noticeTitle}
+								onChange={({ target: { value }}) =>
+									setInsertFaqData({ ...insertFaqData, noticeTitle: value})
+								}
+							/>
+							<TextareaAutosize
+								className={'content-input'}
+								maxRows={5}
+								placeholder='Message Here...'
+								style={{height: '200px'}}
+								value={insertFaqData.noticeContent}
+								onChange={({ target: { value }}) =>
+									setInsertFaqData({ ...insertFaqData, noticeContent: value})
+								}
+							/>
+							<Button
+								className={'button'}
+								disabled={doDisabledCheck()}
+								onClick={insertInquiryHandler}
+								variant="outlined"
+							>
+								Create
+							</Button>
+						</Stack>
+					</Stack>
+				) : (
+					<Button
+						className="btn_add"
+						variant={'contained'}
+						size={'medium'}
+						onClick={() => {setOpen(true)}}
+					>
+						<AddRoundedIcon sx={{ mr: '8px' }} />
+						ADD
+					</Button>
+				)}
 			</Box>
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>
@@ -116,32 +196,25 @@ const FaqArticles: NextPage = (props: any) => {
 						<Box component={'div'}>
 							<List className={'tab-menu'}>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'all')}
+									onClick={(e: any) => handleTabChange(e, 'all')}
 									value="all"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'all' ? 'li on' : 'li'}
 								>
-									All (0)
+									All
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'active')}
+									onClick={(e: any) => handleTabChange(e, 'active')}
 									value="active"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'active' ? 'li on' : 'li'}
 								>
-									Active (0)
+									Active
 								</ListItem>
 								<ListItem
-									// onClick={(e) => handleTabChange(e, 'blocked')}
-									value="blocked"
-									className={'all' === 'all' ? 'li on' : 'li'}
-								>
-									Blocked (0)
-								</ListItem>
-								<ListItem
-									// onClick={(e) => handleTabChange(e, 'deleted')}
+									onClick={(e: any) => handleTabChange(e, 'deleted')}
 									value="deleted"
-									className={'all' === 'all' ? 'li on' : 'li'}
+									className={tab === 'deleted' ? 'li on' : 'li'}
 								>
-									Deleted (0)
+									Deleted
 								</ListItem>
 							</List>
 							<Divider />
@@ -197,6 +270,21 @@ const FaqArticles: NextPage = (props: any) => {
 			</Box>
 		</Box>
 	);
+};
+
+FaqArticles.defaultProps = {
+	initialValues: {
+		noticeCategory: NoticeCategory.FAQ,
+		noticeTitle: '',
+		noticeContent: '',
+	},
+	initialInquiry: {
+		page: 1,
+		limit: 10,
+		search: {
+			noticeCategory: NoticeCategory.FAQ
+		}
+	}
 };
 
 export default withAdminLayout(FaqArticles);

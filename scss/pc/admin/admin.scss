@@ -280,10 +280,70 @@
       color: #fff;
       border-radius: 8px;
     }
-    .btn-add {
+    .btn_add {
       color: #fff;
       font-weight: 500;
       box-shadow: rgb(255 48 48 / 24%) 0px 8px 16px 0px;
+      height: 40px;
+      margin-top: 20px;
+      background-color: #d16655;
+      font-weight: bold;
+      color: white;
+      &:hover {
+        background-color: #2e4a5b;
+        box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+      }
+    }
+    .contact-main {
+      width: 100%;
+      margin-top: 20px;
+      padding: 40px;
+      border-radius: 10px;
+      background-color: #f6e5de;
+
+      .head-items {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .close-icon {
+          cursor: pointer;
+          &:hover {
+            scale: 1.5;
+            transition: 1s;
+          }
+        }
+      }
+
+      p {
+        font-size: 35px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .inquiry-box {
+        margin-top: 20px;
+
+        .content-input {
+          padding: 20px;
+          margin-top: 30px;
+        }
+
+        .button {
+          width: 20%;
+          height: 40px;
+          margin-top: 20px;
+          background-color: #d16655;
+          font-weight: bold;
+          color: white;
+          &:hover {
+            background-color: #2e4a5b;
+            box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+          }
+        }
+      }
     }
     .btn-cancel {
       color: #757575;

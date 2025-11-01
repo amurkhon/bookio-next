@@ -1,4 +1,4 @@
-import { NoticeCategory } from "../../enums/notice.enum";
+import { NoticeCategory, NoticeStatus } from "../../enums/notice.enum";
 
 
 export interface NoticeInput {
@@ -9,6 +9,7 @@ export interface NoticeInput {
 
 interface NISearch {
     noticeCategory: NoticeCategory;
+    noticeStatus?: NoticeStatus;
 }
 
 export interface NoticesInquiry {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { HtmlHTMLAttributes, useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 import { Box, Button, InputAdornment, Stack, TextareaAutosize, TextField } from '@mui/material';
@@ -33,6 +33,7 @@ const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 	const [searchInquiryData, setSearchInquiryData] = useState<NoticesInquiry>(initialInquiry);
 	const [ open, setOpen ] = useState<boolean>(false);
 	const [tab, setTab ] = useState<string>('all');
+	const [searchText, setSearchText ] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
 
@@ -65,6 +66,10 @@ const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 	useEffect(() => {
 		getNoticesRefetch({input: searchInquiryData});
 	}, [searchInquiryData]);
+
+	useEffect(() => {
+		getNoticesRefetch({input: searchInquiryData});
+	}, [searchText]);
 
 	/** HANDLERS **/
 
@@ -219,24 +224,54 @@ const FaqArticles: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 							</List>
 							<Divider />
 							<Stack className={'search-area'} sx={{ m: '24px' }}>
-								<Select sx={{ width: '160px', mr: '20px' }} value={'searchCategory'}>
-									<MenuItem value={'mb_nick'}>mb_nick</MenuItem>
-									<MenuItem value={'mb_id'}>mb_id</MenuItem>
-								</Select>
-
 								<OutlinedInput
-									value={'searchInput'}
-									// onChange={(e) => handleInput(e.target.value)}
+									value={searchText}
+									type={'text'}
+									onChange={(e) => setSearchText(e.target.value)}
 									sx={{ width: '100%' }}
 									className={'search'}
-									placeholder="Search user name"
+									placeholder="Search answer by title"
 									onKeyDown={(event) => {
-										// if (event.key == 'Enter') searchTargetHandler().then();
+										if (event.key == 'Enter') {
+											setSearchInquiryData(
+												{
+													...searchInquiryData,
+													search: {
+														...searchInquiryData.search,
+														text: searchText
+													}
+												}
+											);
+										};
 									}}
 									endAdornment={
 										<>
-											{true && <CancelRoundedIcon onClick={() => {}} />}
-											<InputAdornment position="end" onClick={() => {}}>
+											{searchText && <CancelRoundedIcon 
+												sx={{cursor: 'pointer'}} 
+												onClick={() => {
+													setSearchText('');
+													setSearchInquiryData(
+														{
+															...searchInquiryData,
+															search: {
+																...searchInquiryData.search,
+																text: '',
+															}
+														}
+													);
+												}} 
+											/>}
+											<InputAdornment position="end" onClick={() => {
+												setSearchInquiryData(
+													{
+														...searchInquiryData,
+														search: {
+															...searchInquiryData.search,
+															text: searchText
+														}
+													}
+												);
+											}}>
 												<img src="/img/icons/search_icon.png" alt={'searchIcon'} />
 											</InputAdornment>
 										</>

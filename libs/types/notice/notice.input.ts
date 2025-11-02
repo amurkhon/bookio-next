@@ -10,6 +10,7 @@ export interface NoticeInput {
 interface NISearch {
     noticeCategory: NoticeCategory;
     noticeStatus?: NoticeStatus;
+    text?: string;
 }
 
 export interface NoticesInquiry {

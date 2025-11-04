@@ -26,7 +26,6 @@ export const PropertyCard = (props: PropertyCardProps) => {
 
 	/** HANDLERS **/
 	const pushEditProperty = async (id: string) => {
-		console.log('+pushEditProperty: ', id);
 		await router.push({
 			pathname: '/mypage',
 			query: { category: 'addProperty', propertyId: id },
@@ -77,7 +76,7 @@ export const PropertyCard = (props: PropertyCardProps) => {
 						</Typography>
 					</Stack>
 				</Stack>
-				{!memberPage && property.propertyStatus !== 'SOLD' && (
+				{!memberPage && property.propertyStatus !== PropertyStatus.DELETE && (
 					<Menu
 						anchorEl={anchorEl}
 						open={open}
@@ -104,10 +103,10 @@ export const PropertyCard = (props: PropertyCardProps) => {
 									disableRipple
 									onClick={() => {
 										handleClose();
-										updatePropertyHandler(PropertyStatus.SOLD, property?._id);
+										updatePropertyHandler(PropertyStatus.DELETE, property?._id);
 									}}
 								>
-									Sold
+									Delete
 								</MenuItem>
 							</>
 						)}

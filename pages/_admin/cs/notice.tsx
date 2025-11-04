@@ -23,8 +23,11 @@ import { GET_NOTICES } from '../../../apollo/user/query';
 import { Notice } from '../../../libs/types/notice/notice';
 import { T } from '../../../libs/types/common';
 import { NoticeUpdate } from '../../../libs/types/notice/notice.update';
+import { useRouter } from 'next/router';
+import { GET_NOTICE } from '../../../apollo/admin/query';
 
 const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) => {
+	const router = useRouter();
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
 	const [ noticeTerms, setNoticeTerms ] = useState<Notice[]>([]);
 	const [ open, setOpen ] = useState<boolean>(false);
@@ -59,9 +62,28 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 			}
 		}
 	);
-	console.log("terms: ", noticeTerms);
+
+	const {
+		loading: getNoticeLoading,
+		data: getNoticeData,
+		error: getNoticeError,
+		refetch: getNoticeRefetch,		
+	} = useQuery(GET_NOTICE, {
+		fetchPolicy: "network-only",
+		variables: {input: router.query.id},
+		skip: !router.query.id,
+		notifyOnNetworkStatusChange: true,
+	});
 
 	/** LIFECYCLES **/
+	useEffect(() => {
+		setInsertTermsData({
+			...insertTermsData,
+			noticeTitle: getNoticeData?.getNotice ? getNoticeData?.getNotice?.noticeTitle : '',
+			noticeContent: getNoticeData?.getNotice ? getNoticeData?.getNotice?.noticeContent : '',
+			noticeStatus: getNoticeData?.getNotice ? getNoticeData?.getNotice?.noticeStatus : NoticeStatus.ACTIVE,
+		});
+	}, [getNoticeLoading, getNoticeData]);
 
 	useEffect(() => {
 		getTermsRefetch({input: searchInquiryData});
@@ -70,6 +92,12 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 	useEffect(() => {
 		getTermsRefetch({input: searchInquiryData});
 	}, [searchText]);
+
+	useEffect(() => {
+		if(!open) {
+			router.push(`/_admin/cs/notice`);
+		}
+	}, [open])
 
 
 	/** HANDLERS **/
@@ -112,12 +140,18 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 		}
 	}, [insertTermsData]);
 
-	const updateTermsHandler = async (updateData: NoticeUpdate) => {
+	console.log("insertTersmsData: ", insertTermsData);
+
+	const updateTermsHandler = useCallback( async ( ) => {
 		try {
+
+			// @ts-ignore
+			insertTermsData._id = getNoticeData?.getNotice?._id;
+			console.log("insertTermsData: ", insertTermsData);
 			await updateNotice(
 				{
 					variables: {
-						input: updateData,
+						input: {...insertTermsData},
 					},
 				},
 			);
@@ -125,10 +159,11 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 
 			handleMenuIconClose();
 			await getTermsRefetch({ input: searchInquiryData });
+			await sweetMixinSuccessAlert('Term has been changed successfully!');
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
-	};
+	}, [insertTermsData]);
 
 	const handleMenuIconClick = (e: any, index: number) => {
 		const tempAnchor = anchorEl.slice();
@@ -149,7 +184,7 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 					<Stack className={'contact-main'}>
 						<Stack className={'head-items'}>
 							<Typography>
-								Create Term Notice
+								Term Notice
 							</Typography>
 							<CloseIcon onClick={() => {setOpen(false)}} className={'close-icon'} />
 						</Stack>
@@ -173,14 +208,15 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 									setInsertTermsData({ ...insertTermsData, noticeContent: value})
 								}
 							/>
-							<Button
-								className={'button'}
-								disabled={doDisabledCheck()}
-								onClick={insertInquiryHandler}
-								variant="outlined"
-							>
-								Create
-							</Button>
+							{router.query.id ? (
+								<Button className="button" disabled={doDisabledCheck()} variant="outlined" onClick={updateTermsHandler}>
+									Save
+								</Button>
+							) : (
+								<Button className="button" disabled={doDisabledCheck()} variant="outlined" onClick={insertInquiryHandler}>
+									Create
+								</Button>
+							)}
 						</Stack>
 					</Stack>
 				) : (
@@ -290,6 +326,7 @@ const AdminNotice: NextPage = ({initialInquiry, initialValues, ...props}: any) =
 							handleMenuIconClick={handleMenuIconClick}
 							handleMenuIconClose={handleMenuIconClose}
 							updateTermsHandler={updateTermsHandler}
+							openForm={setOpen}
 						/>
 
 						<TablePagination

@@ -25,6 +25,7 @@ import { NotePencil } from 'phosphor-react';
 import { Notice } from '../../../types/notice/notice';
 import { NEXT_PUBLIC_REACT_APP_API_URL } from '../../../config';
 import Moment from 'react-moment';
+import { NoticeStatus } from '../../../enums/notice.enum';
 
 type Order = 'asc' | 'desc';
 
@@ -128,17 +129,6 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 			) : (
 				<TableHead>
 					<TableRow>
-						<TableCell padding="checkbox">
-							<Checkbox
-								color="primary"
-								indeterminate={numSelected > 0 && numSelected < rowCount}
-								checked={rowCount > 0 && numSelected === rowCount}
-								onChange={onSelectAllClick}
-								inputProps={{
-									'aria-label': 'select all',
-								}}
-							/>
-						</TableCell>
 						{headCells.map((headCell) => (
 							<TableCell
 								key={headCell.id}
@@ -165,6 +155,7 @@ interface NoticeListType {
 	handleMenuIconClick?: any;
 	handleMenuIconClose?: any;
 	updateTermsHandler?: any;
+	openForm?: any;
 }
 
 export const NoticeList = (props: NoticeListType) => {
@@ -177,6 +168,7 @@ export const NoticeList = (props: NoticeListType) => {
 		handleMenuIconClick,
 		handleMenuIconClose,
 		updateTermsHandler,
+		openForm
 	} = props;
 	const router = useRouter();
 
@@ -198,9 +190,6 @@ export const NoticeList = (props: NoticeListType) => {
 
 							return (
 								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell padding="checkbox">
-										<Checkbox color="primary" />
-									</TableCell>
 									<TableCell align="left">{ele?.noticeCategory}</TableCell>
 									<TableCell align="left">{ele?.noticeTitle}</TableCell>
 									<TableCell align="left">
@@ -220,13 +209,23 @@ export const NoticeList = (props: NoticeListType) => {
 									</TableCell>
 									<TableCell align="right">
 										<Tooltip title={'delete'}>
-											<IconButton>
-												<DeleteRoundedIcon />
+											<IconButton key={ele?._id}>
+												{ ele?.noticeStatus === NoticeStatus.DELETE ? '' : 
+													<DeleteRoundedIcon onClick={() => {updateTermsHandler(
+														{
+															_id: ele?._id,
+															noticeStatus: NoticeStatus.DELETE,
+														}
+													)}} />
+												}
 											</IconButton>
 										</Tooltip>
 										<Tooltip title="edit">
-											<IconButton onClick={() => router.push(`/_admin/cs/notice_create?id=notice._id`)}>
-												<NotePencil size={24} weight="fill" />
+											<IconButton >
+												<NotePencil size={24} weight="fill" onClick={() => {
+													openForm(true);
+													router.push(`/_admin/cs/notice?id=${ele?._id}`)
+												}} />
 											</IconButton>
 										</Tooltip>
 									</TableCell>

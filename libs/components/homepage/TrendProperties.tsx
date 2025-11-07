@@ -101,7 +101,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 							<span>Trending on Bookio</span>
 							<p>Trend is based on likes</p>
 						</Box>
-						<Divider sx={{width: "45%", height: '5px', backgroundColor: '#f5eaebff'}} />
+						<Divider sx={{width: "35%", height: '5px', backgroundColor: '#f5eaebff'}} />
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
 								<WestIcon className={'swiper-trend-prev'} />
@@ -154,7 +154,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 TrendProperties.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 8,
+		limit: 7,
 		sort: 'propertyLikes',
 		direction: 'DESC',
 		search: {},

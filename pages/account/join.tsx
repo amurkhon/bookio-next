@@ -90,7 +90,7 @@ const Join: NextPage = () => {
 								<div className={'input-box'}>
 									<span>Password</span>
 									<input
-										type="text"
+										type="password"
 										placeholder={'Enter Password'}
 										onChange={(e) => handleInput('password', e.target.value)}
 										required={true}
@@ -161,6 +161,7 @@ const Join: NextPage = () => {
 
 								{loginView ? (
 									<Button
+										className={'button'}
 										variant="contained"
 										endIcon={<img src="/img/icons/rightup.svg" alt="" />}
 										disabled={input.nick == '' || input.password == ''}
@@ -170,6 +171,7 @@ const Join: NextPage = () => {
 									</Button>
 								) : (
 									<Button
+										className={'button'}
 										variant="contained"
 										disabled={input.nick == '' || input.password == '' || input.phone == '' || input.type == ''}
 										onClick={doSignUp}

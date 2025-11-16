@@ -1,0 +1,100 @@
+#mobile-wrap {
+    .home-page {
+        position: relative;
+        top: 50px;
+
+        .trend-properties {
+			width: 100%;
+			height: 597px;
+			display: flex;
+			flex-direction: row;
+			.container {
+				flex-direction: column;
+
+				.pagination-box {
+					
+					.swiper-trend-pagination {
+						width: 115px;
+					}
+				}
+				.card-box {
+					position: relative;
+					margin-top: 64px;
+					display: flex;
+					flex-direction: row;
+					.empty-list {
+						width: 100%;
+						height: 280px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					}
+					.trend-property-swiper {
+                        position: relative;
+						width: 100%;
+						height: 400px;
+                        padding-left: 50px;
+						display: flex;
+						flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+						.trend-property-slide {
+							width: 100% !important;
+							height: 400px;
+							display: flex;
+							margin: 0 auto;
+
+                            .trend-card-box {
+                                position: relative;
+                                width: 80%;
+                                height: 400px;
+                                display: flex;
+                                .img-box {
+                                    transition: transform 0.3s;
+                                    &:hover {
+                                        opacity: 1;
+                                        transform: scale(1.05);
+                                        border-radius: 12px 12px 0px 0px;
+                                    }
+                                    .card-img {
+                                        position: relative;
+                                        width: 100%;
+                                        height: 300px;
+                                    }
+                                }
+                                .info {
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: flex-start;
+                                    .title {
+                                        position: relative;
+                                        align-self: flex-start;
+                                        left: 0;
+                                        overflow: hidden;
+                                        color: #181a20;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                        font-family: $font;
+                                        font-size: 15px;
+                                        font-style: normal;
+                                        font-weight: 600;
+                                        line-height: normal;
+                                        text-transform: capitalize;
+                                        cursor: pointer;
+                                    }
+                                    .stats-info {
+                                        width: 100%;
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: flex-start;
+                                        align-items: center;
+                                    }
+                                }
+						}
+					}
+					}
+				}
+			}
+		}
+    }
+}

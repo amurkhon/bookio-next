@@ -74,10 +74,9 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 						) : (
 							<Swiper
 								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
-								centeredSlides={true}
-								spaceBetween={15}
+								slidesPerView={1}
 								modules={[Autoplay]}
+								centeredSlides={true}
 							>
 								{trendProperties.map((property: Property) => {
 									return (

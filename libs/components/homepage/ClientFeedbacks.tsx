@@ -45,53 +45,72 @@ const userOpinions = [
 
 const FeedBackCard = (props: any) => {
 	const { opinion } = props;
-	const device = useDeviceDetect();
-
-	if (device === 'mobile') {
-		return <div>EVENT CARD</div>;
-	} else {
-		return (
-			<CssVarsProvider>
-			<Stack className={'card-box'}>
-				<Stack className={'introduction'}>
-					<img
-						src={opinion?.image}
-						loading="lazy"
-						alt=""
-					/>
-					<Stack>
-						<Typography level="title-lg" id="card-description">
-							{opinion?.name}
-						</Typography>
-						<Typography
-						level="body-sm"
-						aria-describedby="card-description"
-						sx={{ mb: 1 }}
-						>
-							{opinion?.address}
-						</Typography>
-					</Stack>
-				</Stack>
-				<Stack className={'card-body'}>
-					<Stack className={'feedback-purpose'}>
-						<BlurOnIcon className={'icon'} sx={{ fontSize: 40, marginRight: '10px', color: '#e96d5a' }} />
-						<Typography>User About Platform</Typography>
-					</Stack>
-					<Typography>
-						{opinion?.opinion}
+	return (
+		<CssVarsProvider>
+		<Stack className={'card-box'}>
+			<Stack className={'introduction'}>
+				<img
+					src={opinion?.image}
+					loading="lazy"
+					alt=""
+				/>
+				<Stack>
+					<Typography level="title-lg" id="card-description">
+						{opinion?.name}
+					</Typography>
+					<Typography
+					level="body-sm"
+					aria-describedby="card-description"
+					sx={{ mb: 1 }}
+					>
+						{opinion?.address}
 					</Typography>
 				</Stack>
 			</Stack>
-			</CssVarsProvider>
-		);
-	}
-};
+			<Stack className={'card-body'}>
+				<Stack className={'feedback-purpose'}>
+					<BlurOnIcon className={'icon'} sx={{ fontSize: 40, marginRight: '10px', color: '#e96d5a' }} />
+					<Typography>User About Platform</Typography>
+				</Stack>
+				<Typography>
+					{opinion?.opinion}
+				</Typography>
+			</Stack>
+		</Stack>
+		</CssVarsProvider>
+	);
+}
 
 const FeedBacks = () => {
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
-		return <div>EVENT CARD</div>;
+		return (
+			<Stack className={'client-feedback'}>
+				<Stack className={'container'}>
+					<Box className={'title'}>
+						Our Client's feedbacks
+					</Box>
+					<Stack className={'feedback-box'}>
+						<Swiper
+							className={'feedback-swiper'}
+							spaceBetween={10}
+							slidesPerView={1}
+							centeredSlides={true}
+							modules={[Autoplay]}
+						>
+							{userOpinions.map((ele: any, index: number) => {
+								return (
+									<SwiperSlide key={index} className={'feedback-slide'}>
+										<FeedBackCard opinion={ele} />
+									</SwiperSlide>
+								);
+							})}
+						</Swiper>
+					</Stack>
+				</Stack>
+			</Stack>
+		);
 	} else {
 		return (
 			<Stack className={'client-feedback'}>

@@ -174,5 +174,92 @@
 				}
 			}
 		}
+        .client-feedback {
+			width: 100%;
+			height: auto;
+			display: flex;
+			margin-top: 80px;
+            margin-bottom: 60px;
+
+			.container {
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+
+				.title {
+					margin-bottom: 40px;
+					font-family: $font;
+					font-style: normal;
+					font-size: 30px;
+					font-weight: 400;
+					line-height: normal;
+					text-transform: capitalize;
+				}
+
+				.feedback-box {
+					width: 100%;
+
+					.feedback-swiper {
+						width: 90%;
+
+						.feedback-slide {
+							width: 100%;
+							display: flex;
+							flex-direction: row;
+
+							.card-box {
+								width: 100%;
+								height: 250px;
+								padding: 20px;
+								background-color: #f8ebe5;
+								border-top: 10px solid #bd7579;
+								&:hover {
+									background-color: #d16655;
+									border-bottom: white;
+									border-top: white;
+									p {
+										color: white;
+									}
+									.icon {
+										color: white;
+									}
+								}
+
+								.introduction {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+
+									img {
+										width: 100px;
+										border-radius: 50% 50% 10% 50%;
+										margin-right: 15px;
+									}
+								}
+
+								.card-body {
+									display: flex;
+									flex-direction: column;
+									justify-content: flex-start;
+
+									.feedback-purpose {
+										display: flex;
+										flex-direction: row;
+										margin-top: 10px;
+										margin-bottom: 10px;
+										align-items: center;
+										
+										p {
+											font-family: $font;
+											font-size: 25px
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
     }
 }

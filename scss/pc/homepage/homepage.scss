@@ -916,75 +916,71 @@
 				}
 				.community-main {
 					width: 100%;
-					padding: 50px;
+					height: auto;
+					padding-top: 40px;
+					margin-top: 30px;
 					display: flex;
 					flex-direction: row;
-					flex-wrap: wrap;
-					justify-content: space-evenly;
-
-					.card {
-						width: 100%;
-						height: auto;
-						margin-right: 28px;
-						background-color: #f8ebe5;
-						margin-bottom: 20px;
-						&:hover {
-							background-color: #c07c7f;
-							transition-duration: 0.5s;
-							color: white;
-
-							.icon {
-								color: white;
-							}
-
-							p {
-								color: white;
-							}
-
-							.devider {
-								background-color: white;
-							}
-							
-							.button {
-								background-color: white;
-								color: #c07c7f;
+					justify-content: flex-start;
+					.last-article {
+						width: 70%;
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+						.img-box {
+							width: 40%;
+							img {
+								width: 100%;
+								height: auto;
 							}
 						}
-
-						.card-content {
-							width: 100%;
+						.info {
+							width: 60%;
+							padding-left: 10px;
 							display: flex;
 							flex-direction: column;
-							padding: 10px;
+							justify-content: flex-start;
 
-							.meta-info {
+							p {
+								font-size: 35px;
+								font-weight: 500;
+								margin-top: 20px;
+							}
+							span {
+								font-size: 18px;
+								line-height: 26px;
+							}
+							a {
+								margin-top: 30px;
+								font-style: italic;
+								color: blue;
+								cursor: pointer;
+							}
+						}
+					}
+
+					.article-list {
+						width: 30%;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						.card {
+							width: 65%;
+							height: auto;
+							margin-bottom: 5px;
+							img {
+								width: 100%;
+							}
+
+							.card-content {
 								width: 100%;
 								display: flex;
-								flex-direction: row;
+								flex-direction: column;
 								justify-content: flex-start;
-								align-items: center;
-								margin-bottom: 20px;
-
-								.info {
-									display: flex;
-									flex-direction: row;
-									justify-content: space-between;
-									align-items: center;
-									margin-right: 20px;
-									font-size: 14px;
-
-									.icon {
-										margin-right: 5px;
-									}
+								.time {
+									opacity: 0.5;
 								}
 							}
-							.button {
-								&:hover {
-									background-color: #2e4a5b;
-									color: white;
-								}
-							}
-
 						}
 					}
 				}

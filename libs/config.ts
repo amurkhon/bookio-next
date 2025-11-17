@@ -21,3 +21,18 @@ export const Messages = {
 };
 
 export const topPropertyRank = 2;
+
+export default function extractTextOnly(html: any) {
+  if (!html) return "";
+
+  // Create a DOM parser
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  // Remove all images
+  doc.querySelectorAll("img").forEach(img => img.remove());
+
+  // Return cleaned text content
+  return doc.body.textContent.trim();
+}
+

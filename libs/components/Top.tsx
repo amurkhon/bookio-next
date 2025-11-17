@@ -86,7 +86,6 @@ const Top = () => {
 	const handleCloseNot = () => {
 		setAnchorEl3(null);
 	};
-	console.log("user: ", user);
 
 
 	/* APOLLO REQUESTS*/
@@ -108,9 +107,6 @@ const Top = () => {
 			}
 		}
 	);
-
-	console.log("notififcations: ",notifications);
-	console.log("total: ", notifications.length);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -274,8 +270,12 @@ const Top = () => {
 							<Box className={'logo-box'}>
 								<img src="/img/logo/black-logo.svg" alt="" />
 							</Box>
-							{ !user ? (
-								<Button color="inherit">Login</Button>
+							{ !user?._id ? (
+								<Link href={'/account/join'}>
+									<Button color="inherit">
+										{t('Login')}
+									</Button>
+								</Link>
 							) : (
 								<Box sx={{ flexGrow: 0 }}>
 									<Tooltip title="Open settings">
@@ -299,7 +299,7 @@ const Top = () => {
 										open={Boolean(anchorElUser)}
 										onClose={handleCloseUserMenu}
 									>
-										<MenuItem key={'logout'} onClick={handleCloseUserMenu}>
+										<MenuItem key={'logout'} onClick={() => { logOut(); handleCloseUserMenu(); }}>
 											<Typography sx={{ textAlign: 'center' }}>Logout</Typography>
 										</MenuItem>
 									</Menu>

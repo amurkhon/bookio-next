@@ -74,8 +74,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 							className={'button'} 
 							sx={{width: "50%",backgroundColor: "#d16655", color: 'white'}} 
 							size={'lg'} 
-							endDecorator={<KeyboardArrowRight />} 
-							color={'#2e4a5b'}
+							endDecorator={<KeyboardArrowRight />}
 							onClick={() => {pushDetailHandler(article?._id, article?.articleCategory)}}
 						>
 							Read More

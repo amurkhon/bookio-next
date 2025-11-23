@@ -99,7 +99,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 							</CardOverflow>
 							<CardContent className={'card-content'}>
 								<Moment className={'time'} format={'HH:MM | DD.MM.YYYY'}>{article?.createdAt}</Moment>
-								<Typography size={'large'}>
+								<Typography variant={'h3'}>
 									{article?.articleTitle}
 								</Typography>
 							</CardContent>

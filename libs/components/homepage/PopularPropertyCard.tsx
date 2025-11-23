@@ -20,6 +20,12 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 
+	const imageSrc =
+		property?.propertyImages && property.propertyImages.length > 0
+			? `${NEXT_PUBLIC_REACT_APP_API_URL}/${property.propertyImages[0]}`
+			: "/img/default-image.png";
+
+
 	/** HANDLERS **/
 
 	const pushDetailHandler = async (propertyId: string) => {
@@ -30,7 +36,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 			return (
 				<Stack className={'popular-card-box'} onClick={() => {pushDetailHandler(property?._id)}}>
 					<Box className={'image-box'}>
-						<img src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`} />
+						<img src={imageSrc} />
 					</Box>
 					<Stack className={'info-box'}>
 						<Rating
@@ -65,7 +71,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 			return (
 				<Stack className={'popular-card-box'} onClick={() => {pushDetailHandler(property?._id)}}>
 					<Box className={'image-box'}>
-						<img src={`${NEXT_PUBLIC_REACT_APP_API_URL}/${property?.propertyImages[0]}`} />
+						<img src={imageSrc} />
 					</Box>
 					<Stack className={'info-box'}>
 						<Rating

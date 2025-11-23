@@ -6,7 +6,6 @@ import PopularProperties from '../libs/components/homepage/PopularProperties';
 import TopAgents from '../libs/components/homepage/TopAgents';
 import FeedBacks from '../libs/components/homepage/ClientFeedbacks';
 import TrendProperties from '../libs/components/homepage/TrendProperties';
-import TopProperties from '../libs/components/homepage/TopProperties';
 import { Stack } from '@mui/material';
 import Advertisement from '../libs/components/homepage/Advertisement';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

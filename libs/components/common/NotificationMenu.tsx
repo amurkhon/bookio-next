@@ -88,7 +88,7 @@ export function NotificationMenu(props: NotificationMenu) {
 
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box>
       {/* 1. NOTIFICATION BELL BUTTON */}
       <IconButton
         size="large"

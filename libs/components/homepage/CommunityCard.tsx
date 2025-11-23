@@ -63,7 +63,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 								{article?.articleComments} Comments
 							</Box>
 						</Stack>
-						<Typography size={'large'}>
+						<Typography variant={'h3'}>
 							{article?.articleTitle}
 						</Typography>
 						<Typography variant={'h2'}>

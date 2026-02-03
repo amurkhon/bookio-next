@@ -592,4 +592,127 @@
 			}
 		}
 	}
+	
+	// =============================================
+	// Community Board Modern Dark Mode
+	// =============================================
+	.community-board-modern {
+		background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
+		
+		.section-header {
+			.title-wrapper {
+				.subtitle {
+					background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%) !important;
+					color: #90a8f9 !important;
+				}
+				
+				.title {
+					background: linear-gradient(135deg, #ffffff 0%, #90a8f9 100%) !important;
+					-webkit-background-clip: text !important;
+					-webkit-text-fill-color: transparent !important;
+				}
+				
+				.description {
+					color: var(--text-secondary) !important;
+				}
+			}
+		}
+		
+		.featured-article {
+			background: var(--surface) !important;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+			
+			&:hover {
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+			}
+			
+			.featured-content {
+				.meta-info .meta-item {
+					color: var(--text-secondary) !important;
+					
+					svg {
+						color: #90a8f9 !important;
+					}
+				}
+				
+				.featured-title {
+					color: var(--text-primary) !important;
+				}
+				
+				.featured-excerpt {
+					color: var(--text-secondary) !important;
+				}
+				
+				.read-more {
+					color: #90a8f9 !important;
+				}
+			}
+			
+			.category-chip {
+				background: rgba(102, 126, 234, 0.2) !important;
+				color: #90a8f9 !important;
+			}
+		}
+		
+		.community-card-modern {
+			background: var(--surface) !important;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+			
+			&:hover {
+				box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+			}
+			
+			.card-content {
+				.meta-row {
+					.category-chip {
+						background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%) !important;
+						color: #90a8f9 !important;
+					}
+					
+					.date {
+						color: var(--text-secondary) !important;
+						
+						svg {
+							color: #90a8f9 !important;
+						}
+					}
+				}
+				
+				.card-title {
+					color: var(--text-primary) !important;
+				}
+				
+				.card-footer {
+					border-color: var(--border-color) !important;
+					
+					.author {
+						color: var(--text-secondary) !important;
+					}
+					
+					.date {
+						color: var(--text-secondary) !important;
+						
+						svg {
+							color: #90a8f9 !important;
+						}
+					}
+					
+					.read-more {
+						color: #90a8f9 !important;
+					}
+				}
+				
+				.card-excerpt {
+					color: var(--text-secondary) !important;
+				}
+			}
+			
+			&.mobile {
+				.card-image .category-chip {
+					background: rgba(102, 126, 234, 0.9) !important;
+					color: white !important;
+				}
+			}
+		}
+	}
 }

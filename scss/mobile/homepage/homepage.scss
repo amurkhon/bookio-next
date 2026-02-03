@@ -366,5 +366,283 @@
 				}
 			}
 		}
+
+		// =============================================
+		// Modern Community Board Mobile Styles
+		// =============================================
+		.community-board-modern.mobile {
+			width: 100%;
+			padding: 50px 0 60px;
+			background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+
+			.container {
+				padding: 0 16px;
+				flex-direction: column;
+			}
+
+			.section-header {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 24px;
+				flex-wrap: wrap;
+				gap: 16px;
+
+				.title-wrapper {
+					.subtitle {
+						display: inline-block;
+						padding: 4px 12px;
+						background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+						color: #667eea;
+						border-radius: 16px;
+						font-size: 10px;
+						font-weight: 600;
+						letter-spacing: 1px;
+						margin-bottom: 8px;
+					}
+
+					.title {
+						font-size: 24px;
+						font-weight: 700;
+						color: var(--text-primary);
+						line-height: 1.2;
+					}
+				}
+
+				.see-all-btn {
+					display: flex;
+					align-items: center;
+					gap: 6px;
+					padding: 10px 18px;
+					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+					border-radius: 24px;
+					box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+					span {
+						color: white;
+						font-size: 12px;
+						font-weight: 600;
+					}
+
+					.arrow-icon {
+						color: white;
+						font-size: 16px;
+					}
+				}
+			}
+
+			.community-swiper-mobile {
+				width: 100%;
+				padding-bottom: 40px;
+
+				.swiper-slide {
+					height: auto;
+				}
+
+				.swiper-pagination {
+					bottom: 0;
+
+					.swiper-pagination-bullet {
+						width: 8px;
+						height: 8px;
+						background: #667eea;
+						opacity: 0.3;
+						transition: all 0.3s ease;
+
+						&-active {
+							opacity: 1;
+							width: 24px;
+							border-radius: 4px;
+						}
+					}
+				}
+			}
+		}
+
+		// Mobile Community Card Modern
+		.community-card-modern.mobile {
+			display: flex;
+			flex-direction: column;
+			background: var(--surface);
+			border-radius: 20px;
+			overflow: hidden;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease;
+
+			.card-image {
+				position: relative;
+				width: 100%;
+				height: 180px;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+
+				.image-overlay {
+					position: absolute;
+					inset: 0;
+					background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+				}
+
+				.category-chip {
+					position: absolute;
+					top: 12px;
+					left: 12px;
+					background: rgba(255, 255, 255, 0.95);
+					color: #667eea;
+					font-weight: 600;
+					font-size: 11px;
+					backdrop-filter: blur(10px);
+				}
+			}
+
+			.card-content {
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+
+				.meta-row {
+					display: flex;
+					gap: 16px;
+
+					.meta-item {
+						display: flex;
+						align-items: center;
+						gap: 4px;
+						color: var(--text-secondary);
+						font-size: 12px;
+
+						svg {
+							font-size: 16px;
+							color: #667eea;
+						}
+					}
+				}
+
+				.card-title {
+					font-size: 18px;
+					font-weight: 700;
+					color: var(--text-primary);
+					line-height: 1.3;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+
+				.card-excerpt {
+					font-size: 14px;
+					color: var(--text-secondary);
+					line-height: 1.6;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+
+				.card-footer {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					padding-top: 16px;
+					border-top: 1px solid var(--border-color);
+					margin-top: auto;
+
+					.date {
+						display: flex;
+						align-items: center;
+						gap: 6px;
+						color: var(--text-secondary);
+						font-size: 13px;
+
+						svg {
+							font-size: 16px;
+							color: #667eea;
+						}
+					}
+
+					.read-more {
+						display: flex;
+						align-items: center;
+						gap: 6px;
+						color: #667eea;
+						font-weight: 600;
+						font-size: 14px;
+
+						svg {
+							font-size: 18px;
+						}
+					}
+				}
+			}
+		}
+
+		// Dark Mode for Mobile Community
+		[data-theme='dark'] & {
+			.community-board-modern.mobile {
+				background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+
+				.section-header {
+					.title-wrapper {
+						.subtitle {
+							background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+							color: #90a8f9;
+						}
+
+						.title {
+							color: var(--text-primary);
+						}
+					}
+				}
+			}
+
+			.community-card-modern.mobile {
+				background: var(--surface);
+				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+				.card-image .category-chip {
+					background: rgba(102, 126, 234, 0.9);
+					color: white;
+				}
+
+				.card-content {
+					.meta-row .meta-item {
+						color: var(--text-secondary);
+
+						svg {
+							color: #90a8f9;
+						}
+					}
+
+					.card-title {
+						color: var(--text-primary);
+					}
+
+					.card-excerpt {
+						color: var(--text-secondary);
+					}
+
+					.card-footer {
+						border-color: var(--border-color);
+
+						.date {
+							color: var(--text-secondary);
+
+							svg {
+								color: #90a8f9;
+							}
+						}
+
+						.read-more {
+							color: #90a8f9;
+						}
+					}
+				}
+			}
+		}
     }
 }

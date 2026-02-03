@@ -1,112 +1,112 @@
 import React from 'react';
-import Link from 'next/link';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography, Chip } from '@mui/material';
 import Moment from 'react-moment';
 import { BoardArticle } from '../../types/board-article/board-article';
-import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
-import { CssVarsProvider } from '@mui/joy/styles';
-import AspectRatio from '@mui/joy/AspectRatio';
-import CardContent from '@mui/joy/CardContent';
-import PersonIcon from '@mui/icons-material/Person';
-import ForumIcon from '@mui/icons-material/Forum';
-import Typography from '@mui/joy/Typography';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/joy/Button';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import ShareIcon from '@mui/icons-material/Share';
-
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
 import { useRouter } from 'next/router';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 interface CommunityCardProps {
-	key: string;
 	article: BoardArticle;
 }
 
 const CommunityCard = (props: CommunityCardProps) => {
-	const {key, article} = props;
+	const { article } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const articleImage = article?.articleImage
 		? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${article?.articleImage}`
 		: '/img/event.svg';
 
-
 	/* Handlers */
-	const pushDetailHandler = async (propertyId: string, propertyCat: string) => {
-        await router.push({pathname: '/community/detail', query: {articleCategory: article?.articleCategory, id: propertyId}});
-    };
+	const pushDetailHandler = async () => {
+		await router.push({
+			pathname: '/community/detail',
+			query: { articleCategory: article?.articleCategory, id: article?._id }
+		});
+	};
 
 	if (device === 'mobile') {
 		return (
-			<CssVarsProvider>
-				<Card id={`card${key}`} className={`card`} color="neutral" variant="plain">
-					<CardOverflow>
-						<AspectRatio ratio="1.5">
-							<img
-								src={articleImage}
-								alt=""
-							/>
-						</AspectRatio>
-					</CardOverflow>
-					<CardContent className={'card-content'}>
-						<Stack className={'meta-info'}>
-							<Box className={'info'}>
-								<PersonIcon className={'icon'} />
-								By {article?.memberData?.memberNick}
-							</Box>
-							<Box className={'info'}>
-								<ForumIcon className={'icon'} />
-								{article?.articleComments} Comments
-							</Box>
-						</Stack>
-						<Typography>
-							{article?.articleTitle}
-						</Typography>
-						<Typography >
-							{article?.articleContent.length > 43 ? `${article?.articleContent.slice(0, 43)}..` : article?.articleContent.slice(0, 45)}
-						</Typography>
-						<Divider className={'devider'} textAlign={'left'} light={true} sx={{width: '100%',marginBottom: "10px",marginTop:"10px", height: "3px", backgroundColor: "#bd7579"}} />
-						<Button 
-							className={'button'} 
-							sx={{width: "50%",backgroundColor: "#42a5f5", color: 'white'}} // Lighter blue 
-							size={'lg'} 
-							endDecorator={<KeyboardArrowRight />}
-							onClick={() => {pushDetailHandler(article?._id, article?.articleCategory)}}
-						>
-							Read More
-						</Button>
-					</CardContent>
-				</Card>
-			</CssVarsProvider>
+			<Box className="community-card-modern mobile" onClick={pushDetailHandler}>
+				<Box className="card-image">
+					<img src={articleImage} alt={article?.articleTitle} />
+					<Box className="image-overlay" />
+					<Chip 
+						label={article?.articleCategory || 'Article'} 
+						size="small"
+						className="category-chip"
+					/>
+				</Box>
+				<Stack className="card-content">
+					<Box className="meta-row">
+						<Box className="meta-item">
+							<PersonOutlineIcon />
+							<span>{article?.memberData?.memberNick || 'Anonymous'}</span>
+						</Box>
+						<Box className="meta-item">
+							<ChatBubbleOutlineIcon />
+							<span>{article?.articleComments || 0}</span>
+						</Box>
+					</Box>
+					<Typography variant="h6" className="card-title">
+						{article?.articleTitle}
+					</Typography>
+					<Typography className="card-excerpt">
+						{article?.articleContent?.length > 80 
+							? `${article?.articleContent.slice(0, 80)}...` 
+							: article?.articleContent
+						}
+					</Typography>
+					<Box className="card-footer">
+						<Box className="date">
+							<CalendarTodayIcon />
+							<Moment format="MMM DD, YYYY">{article?.createdAt}</Moment>
+						</Box>
+						<Box className="read-more">
+							<span>Read More</span>
+							<ArrowForwardIcon />
+						</Box>
+					</Box>
+				</Stack>
+			</Box>
 		);
-	} else {
-		return (
-				<>
-					<CssVarsProvider>
-						<Card id={`card${key}`} onClick={() => {pushDetailHandler(article?.articleCategory, article?._id,)}} className={`card`} color="neutral" variant="plain" sx={{width: 420}}>
-							<CardOverflow>
-								<AspectRatio ratio="2">
-									<img
-										src={articleImage}
-										alt=""
-									/>
-								</AspectRatio>
-							</CardOverflow>
-							<CardContent className={'card-content'}>
-								<Moment className={'time'} format={'HH:MM | DD.MM.YYYY'}>{article?.createdAt}</Moment>
-								<Typography >
-									{article?.articleTitle}
-								</Typography>
-							</CardContent>
-						</Card>
-					</CssVarsProvider>
-				</>
-			);
 	}
+
+	return (
+		<Box className="community-card-modern" onClick={pushDetailHandler}>
+			<Box className="card-image">
+				<img src={articleImage} alt={article?.articleTitle} />
+				<Box className="image-overlay" />
+			</Box>
+			<Stack className="card-content">
+				<Box className="meta-row">
+					<Chip 
+						label={article?.articleCategory || 'Article'} 
+						size="small"
+						className="category-chip"
+					/>
+					<Box className="date">
+						<CalendarTodayIcon />
+						<Moment format="MMM DD">{article?.createdAt}</Moment>
+					</Box>
+				</Box>
+				<Typography variant="subtitle1" className="card-title">
+					{article?.articleTitle}
+				</Typography>
+				<Box className="card-footer">
+					<Box className="author">
+						<PersonOutlineIcon />
+						<span>{article?.memberData?.memberNick || 'Anonymous'}</span>
+					</Box>
+					<ArrowForwardIcon className="arrow-icon" />
+				</Box>
+			</Stack>
+		</Box>
+	);
 };
 
 export default CommunityCard;

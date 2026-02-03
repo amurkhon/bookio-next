@@ -24,10 +24,12 @@ const Home: NextPage = () => {
 	if (device === 'mobile') {
 		return (
 			<Stack className={'home-page'}>
+				<Information />
 				<TrendProperties />
 				<PopularProperties />
 				<Advertisement />
 				<TopAgents />
+				<TopCategories />
 				<FeedBacks />
 				<CommunityBoards />
 			</Stack>

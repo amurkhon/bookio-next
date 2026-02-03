@@ -167,6 +167,16 @@
 		}
 	}
 	
+	// Shop Now Button
+	.header-button {
+		color: white !important;
+		border-color: white !important;
+		
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1) !important;
+		}
+	}
+	
 	// Filter Cards
 	.categories-box,
 	.find-your-book,
@@ -176,6 +186,410 @@
 		
 		&:hover {
 			background-color: var(--bg-secondary) !important;
+		}
+	}
+	
+	// =============================================
+	// Book Detail Page Dark Mode
+	// =============================================
+	#property-detail-page {
+		background: var(--bg-primary) !important;
+		
+		// Global text color for all Typography and text elements
+		p, span, h1, h2, h3, h4, h5, h6 {
+			color: var(--text-primary) !important;
+		}
+		
+		// Global SVG color
+		svg {
+			color: var(--text-primary) !important;
+		}
+		
+		// Info Section
+		.property-info-config {
+			.info {
+				.left-box {
+					.title-main {
+						color: var(--text-primary) !important;
+					}
+					
+					.top-box {
+						.city {
+							color: var(--text-secondary) !important;
+						}
+						
+						.divider {
+							background: var(--border-color) !important;
+						}
+						
+						.date {
+							color: var(--text-primary) !important;
+						}
+					}
+					
+					.bottom-box {
+						.option {
+							p {
+								color: var(--text-primary) !important;
+							}
+							
+							svg {
+								color: var(--text-primary) !important;
+							}
+						}
+					}
+				}
+				
+				.right-box {
+					p, span {
+						color: var(--text-primary) !important;
+					}
+					
+					.buttons {
+						p {
+							color: var(--text-primary) !important;
+						}
+						
+						svg {
+							color: var(--text-primary) !important;
+						}
+					}
+				}
+			}
+			
+			.images {
+				.description {
+					.title {
+						color: var(--text-primary) !important;
+					}
+					
+					.desc {
+						color: var(--text-secondary) !important;
+					}
+				}
+				
+				// Book format items (AudioBook, HardCover, etc.)
+				.right {
+					.row {
+						.item {
+							background-color: var(--surface) !important;
+							border-color: var(--border-color) !important;
+							
+							p, span {
+								color: var(--text-primary) !important;
+							}
+							
+							button {
+								background-color: transparent !important;
+								color: var(--text-primary) !important;
+								
+								p, span {
+									color: var(--text-primary) !important;
+								}
+							}
+							
+							.audio {
+								p {
+									color: var(--text-primary) !important;
+								}
+							}
+							
+							// Alternate item style (HardCover, PaperBack)
+							&.item-alt {
+								background-color: var(--bg-secondary) !important;
+							}
+						}
+						
+						// Add to Cart button
+						.MuiButton-root[variant="outlined"],
+						.add-to-cart-btn {
+							background: var(--surface) !important;
+							border-color: #667eea !important;
+							color: #667eea !important;
+							
+							&:hover {
+								background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+								color: white !important;
+							}
+						}
+					}
+				}
+				
+				.sub-images {
+					.sub-img-box {
+						border-color: var(--border-color);
+					}
+				}
+			}
+		}
+		
+		// Property Description Config
+		.property-desc-config {
+			.left-config {
+				// Options (Print Length, Language, etc.)
+				.options-config {
+					.option {
+						.svg-box {
+							border-color: var(--border-color) !important;
+							background: var(--surface) !important;
+							
+							svg {
+								color: var(--text-primary) !important;
+								
+								path {
+									fill: var(--text-primary) !important;
+								}
+							}
+						}
+						
+						.option-includes {
+							.title {
+								color: var(--text-primary) !important;
+							}
+							
+							.option-data {
+								color: var(--text-secondary) !important;
+							}
+						}
+					}
+				}
+				
+				// Property Details Box
+				.prop-desc-config {
+					background: var(--surface) !important;
+					border-color: var(--border-color) !important;
+					
+					.bottom {
+						.title {
+							color: var(--text-primary) !important;
+						}
+						
+						.info-box {
+							.left, .right {
+								.info {
+									.title {
+										color: var(--text-primary) !important;
+									}
+									
+									.data {
+										color: var(--text-secondary) !important;
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				// Reviews Section
+				.reviews-config {
+					background: var(--surface) !important;
+					border-color: var(--border-color) !important;
+					
+					.filter-box {
+						.review-cnt {
+							.reviews {
+								color: var(--text-primary) !important;
+							}
+							
+							svg path {
+								fill: var(--text-primary) !important;
+							}
+						}
+						
+						.select-box {
+							.sort-title {
+								color: var(--text-secondary) !important;
+							}
+							
+							.select-main {
+								color: var(--text-primary) !important;
+								background: var(--surface) !important;
+							}
+						}
+					}
+					
+					.review-list {
+						.review-config {
+							border-color: var(--border-color) !important;
+							
+							.review-mb-info {
+								.img-name-box {
+									.img-box {
+										background: var(--bg-secondary) !important;
+										border-color: var(--border-color) !important;
+									}
+									
+									.name {
+										color: var(--text-primary) !important;
+									}
+									
+									.date {
+										color: var(--text-secondary) !important;
+									}
+								}
+							}
+							
+							.desc-box {
+								.description {
+									color: var(--text-secondary) !important;
+								}
+							}
+						}
+					}
+				}
+				
+				// Leave Review Section
+				.leave-review-config {
+					background: var(--surface) !important;
+					border-color: var(--border-color) !important;
+					box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3) !important;
+					
+					.main-title {
+						color: var(--text-primary) !important;
+					}
+					
+					.review-title {
+						color: var(--text-primary) !important;
+					}
+					
+					textarea {
+						background: var(--bg-secondary) !important;
+						border-color: var(--border-color) !important;
+						color: var(--text-primary) !important;
+						
+						&::placeholder {
+							color: var(--text-secondary) !important;
+						}
+						
+						&:focus {
+							border-color: var(--text-primary) !important;
+						}
+					}
+					
+					.submit-btn {
+						.submit-review {
+							background: var(--surface) !important;
+							border-color: var(--border-color) !important;
+							
+							.title {
+								color: var(--text-primary) !important;
+							}
+							
+							svg path {
+								fill: var(--text-primary) !important;
+							}
+							
+							&:hover {
+								background: var(--bg-secondary) !important;
+							}
+						}
+						
+						button:disabled {
+							background: var(--bg-secondary) !important;
+							
+							.title {
+								color: var(--text-secondary) !important;
+							}
+						}
+					}
+				}
+			}
+			
+			// Right Sidebar (Contact Form)
+			.right-config {
+				background: var(--surface) !important;
+				border-color: var(--border-color) !important;
+				box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3) !important;
+				
+				.info-box {
+					.main-title {
+						color: var(--text-primary) !important;
+					}
+					
+					.sub-title {
+						color: var(--text-primary) !important;
+					}
+					
+					.image-info {
+						.name-phone-listings {
+							.name {
+								color: var(--text-primary) !important;
+							}
+							
+							.phone-number {
+								.number {
+									color: var(--text-primary) !important;
+								}
+								
+								svg path {
+									fill: var(--text-primary) !important;
+								}
+							}
+							
+							.listings {
+								color: var(--text-primary) !important;
+							}
+						}
+					}
+					
+					input {
+						background: var(--bg-secondary) !important;
+						border-color: var(--border-color) !important;
+						color: var(--text-primary) !important;
+						
+						&::placeholder {
+							color: var(--text-secondary) !important;
+						}
+						
+						&:focus {
+							border-color: var(--text-primary) !important;
+						}
+					}
+					
+					textarea {
+						background: var(--bg-secondary) !important;
+						border-color: var(--border-color) !important;
+						color: var(--text-primary) !important;
+						
+						&::placeholder {
+							color: var(--text-secondary) !important;
+						}
+						
+						&:focus {
+							border-color: var(--text-primary) !important;
+						}
+					}
+					
+					.send-message {
+						background: #42a5f5 !important;
+						
+						&:hover {
+							background: #64b5f6 !important;
+						}
+					}
+				}
+			}
+		}
+		
+		// Similar Properties Section
+		.similar-properties-config {
+			.title-pagination-box {
+				.title-box {
+					.main-title {
+						color: var(--text-primary) !important;
+					}
+					
+					.sub-title {
+						color: var(--text-secondary) !important;
+					}
+				}
+				
+				.pagination-box {
+					svg {
+						color: var(--text-primary) !important;
+					}
+				}
+			}
 		}
 	}
 }

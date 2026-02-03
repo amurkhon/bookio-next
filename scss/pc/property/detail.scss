@@ -291,6 +291,10 @@
 									display: flex;
 									align-items: flex-start;
 								}
+								
+								&.item-alt {
+									background-color: #e5e5e5;
+								}
 							}
 						}
 					}

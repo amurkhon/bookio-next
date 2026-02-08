@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import WestIcon from '@mui/icons-material/West';
@@ -20,6 +21,7 @@ interface PopularPropertiesProps {
 const PopularProperties = (props: PopularPropertiesProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
+	const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
 	const [popularProperties, setPopularProperties] = useState<Property[]>([]);
 
 	/** APOLLO REQUESTS **/
@@ -42,7 +44,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'popular-properties'}>
+			<Stack ref={sectionRef} className={`popular-properties ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<span>Popular Books</span>
@@ -70,7 +72,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 		);
 	} else {
 		return (
-			<Stack className={'popular-properties'}>
+			<Stack ref={sectionRef} className={`popular-properties ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>

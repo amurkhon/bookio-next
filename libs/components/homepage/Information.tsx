@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import SecurityIcon from '@mui/icons-material/Security';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import DiscountIcon from '@mui/icons-material/Discount';
@@ -10,6 +11,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 const Information = () => {
     const device = useDeviceDetect();
     const router = useRouter();
+    const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.2 });
 
     const infoItems = [
         {
@@ -31,10 +33,10 @@ const Information = () => {
 
     if (device === 'mobile') {
         return (
-            <Stack className="info-section-mobile">
+            <Stack ref={sectionRef} className={`info-section-mobile ${isVisible ? 'animate-in' : ''}`}>
                 <Stack className="container">
                     {infoItems.map((item, index) => (
-                        <Stack key={index} className="info-item-mobile">
+                        <Stack key={index} className="info-item-mobile" style={{ transitionDelay: `${index * 120}ms` }}>
                             <Box className="icon-box">
                                 {item.icon}
                             </Box>
@@ -50,9 +52,9 @@ const Information = () => {
     }
 
     return (
-        <Container className={'maininfo-box'}>
+        <Container ref={sectionRef} className={`maininfo-box ${isVisible ? 'animate-in' : ''}`}>
             {infoItems.map((item, index) => (
-                <Stack key={index} className={'info-item'}>
+                <Stack key={index} className={'info-item'} style={{ transitionDelay: `${index * 150}ms` }}>
                     <Box className={'icon-box'}>
                         {item.icon}
                     </Box>

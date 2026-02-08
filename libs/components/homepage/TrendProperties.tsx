@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,6 +23,7 @@ interface TrendPropertiesProps {
 const TrendProperties = (props: TrendPropertiesProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
+	const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
 	const [trendProperties, setTrendProperties] = useState<Property[]>([]);
 
 	/** APOLLO REQUESTS **/
@@ -96,7 +98,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'trend-properties'}>
+			<Stack ref={sectionRef} className={`trend-properties ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<span>Trend Books</span>
@@ -132,7 +134,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 		);
 	} else {
 		return (
-			<Stack className={'trend-properties'}>
+			<Stack ref={sectionRef} className={`trend-properties ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>

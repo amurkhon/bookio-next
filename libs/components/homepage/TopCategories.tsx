@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography, Skeleton } from "@mui/material";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 import TopCategoryPropertyCard from "./TopCategoryCard";
 import { useQuery } from "@apollo/client";
 import { GET_PROPERTIES } from "../../../apollo/user/query";
@@ -30,6 +31,7 @@ const categories = [
 const TopCategories = (props: TopCategoryBooks) => {
     const { initialInput } = props;
     const device = useDeviceDetect();
+    const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
     const [activeCategory, setActiveCategory] = useState<string>('');
     const [topCategoryBooks, setTopCategoryBooks] = useState<Property[]>([]);
     const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(initialInput);
@@ -74,7 +76,7 @@ const TopCategories = (props: TopCategoryBooks) => {
 
     if (device === 'mobile') {
         return (
-            <Stack className="top-categories-modern mobile">
+            <Stack ref={sectionRef} className={`top-categories-modern mobile ${isVisible ? 'animate-in' : ''}`}>
                 <Stack className="container">
                     {/* Header */}
                     <Stack className="section-header">
@@ -136,7 +138,7 @@ const TopCategories = (props: TopCategoryBooks) => {
     }
 
     return (
-        <Stack className="top-categories">
+        <Stack ref={sectionRef} className={`top-categories ${isVisible ? 'animate-in' : ''}`}>
             <Stack className="container">
                 <Stack className="info-box">
                     Top Categories

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { Box, Stack, Typography, Skeleton, Chip } from '@mui/material';
 import CommunityCard from './CommunityCard';
 import { BoardArticle } from '../../types/board-article/board-article';
@@ -22,6 +23,7 @@ import 'swiper/css/effect-fade';
 const CommunityBoards = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
 	const [searchCommunity, setSearchCommunity] = useState({
 		page: 1,
 		direction: 'DESC',
@@ -73,7 +75,7 @@ const CommunityBoards = () => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className="community-board-modern mobile">
+			<Stack ref={sectionRef} className={`community-board-modern mobile ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className="container">
 					{/* Header */}
 					<Stack className="section-header">
@@ -113,7 +115,7 @@ const CommunityBoards = () => {
 	}
 
 	return (
-		<Stack className="community-board-modern">
+		<Stack ref={sectionRef} className={`community-board-modern ${isVisible ? 'animate-in' : ''}`}>
 			<Stack className="container">
 				{/* Header Section */}
 				<Stack className="section-header">

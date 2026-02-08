@@ -1,5 +1,6 @@
 import React from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { Box, Stack, Typography, Chip } from '@mui/material';
 import Moment from 'react-moment';
 import { BoardArticle } from '../../types/board-article/board-article';
@@ -17,6 +18,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 	const { article } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
+	const [cardRef, isVisible] = useScrollAnimation({ threshold: 0.15 });
 	const articleImage = article?.articleImage
 		? `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/${article?.articleImage}`
 		: '/img/event.svg';
@@ -31,7 +33,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Box className="community-card-modern mobile" onClick={pushDetailHandler}>
+			<Box ref={cardRef} className={`community-card-modern mobile ${isVisible ? 'animate-in' : ''}`} onClick={pushDetailHandler}>
 				<Box className="card-image">
 					<img src={articleImage} alt={article?.articleTitle} />
 					<Box className="image-overlay" />
@@ -77,7 +79,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 	}
 
 	return (
-		<Box className="community-card-modern" onClick={pushDetailHandler}>
+		<Box ref={cardRef} className={`community-card-modern ${isVisible ? 'animate-in' : ''}`} onClick={pushDetailHandler}>
 			<Box className="card-image">
 				<img src={articleImage} alt={article?.articleTitle} />
 				<Box className="image-overlay" />

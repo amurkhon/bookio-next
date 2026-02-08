@@ -19,6 +19,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/swee
 import AppsIcon from '@mui/icons-material/Apps';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import ColumnPropertyCard from '../../libs/components/property/HorizontalPropertyCard';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -143,6 +144,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		return (
 			<div id="property-list-page" style={{ position: 'relative' }}>
 				<div className="container">
+					<ScrollReveal>
 					<Stack className={'property-page'}>
 						<Stack className={'filter-config'}>
 							{/* @ts-ignore */}
@@ -229,6 +231,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 							</Stack>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</div>
 			</div>
 		);

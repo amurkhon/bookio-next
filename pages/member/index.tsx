@@ -15,6 +15,7 @@ import { userVar } from '../../apollo/store';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -116,6 +117,7 @@ const MemberPage: NextPage = () => {
 		return (
 			<div id="member-page" style={{ position: 'relative' }}>
 				<div className="container">
+					<ScrollReveal>
 					<Stack className={'member-page'}>
 						<Stack className={'back-frame'}>
 							<Stack className={'left-config'}>
@@ -145,6 +147,7 @@ const MemberPage: NextPage = () => {
 							</Stack>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</div>
 			</div>
 		);

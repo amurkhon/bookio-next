@@ -22,6 +22,7 @@ import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation
 import { GET_COMMENTS, GET_MEMBER, GET_PROPERTIES } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import PropertyCard from '../../libs/components/common/PropertyCard';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -192,6 +193,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 		return (
 			<Stack className={'agent-detail-page'}>
 				<Stack className={'container'}>
+					<ScrollReveal>
 					<Stack className={'agent-info'}>
 						<img
 							src={author?.memberImage ? `${NEXT_PUBLIC_REACT_APP_API_URL}/${author?.memberImage}` : '/img/profile/defaultUser.svg'}
@@ -300,6 +302,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							</Box>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</Stack>
 			</Stack>
 		);

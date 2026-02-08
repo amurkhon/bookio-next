@@ -27,6 +27,7 @@ import { Messages } from '../../libs/config';
 import { sweetConfirmAlert, sweetMixinErrorAlert, sweetMixinSuccessAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { CommentUpdate } from '../../libs/types/comment/comment.update';
 const ToastViewerComponent = dynamic(() => import('../../libs/components/community/TViewer'), { ssr: false });
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -238,6 +239,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 		return (
 			<div id="community-detail-page">
 				<div className="container">
+					<ScrollReveal>
 					<Stack className="main-box">
 						<Stack className="left-config">
 							<Stack className={'image-info'}>
@@ -511,6 +513,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 							</div>
 						</div>
 					</Stack>
+					</ScrollReveal>
 				</div>
 			</div>
 		);

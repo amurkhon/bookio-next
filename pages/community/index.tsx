@@ -16,6 +16,7 @@ import { GET_BOARD_ARTICLES } from '../../apollo/user/query';
 import { LIKE_TARGET_BOARD_ARTICLE } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -111,6 +112,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 		return (
 			<div id="community-list-page">
 				<div className="container">
+					<ScrollReveal>
 					<TabContext value={searchCommunity.search.articleCategory}>
 						<Stack className="main-box">
 							<Stack className="left-config">
@@ -241,6 +243,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 							</Stack>
 						</Stack>
 					</TabContext>
+					</ScrollReveal>
 
 					{totalCount > 0 && (
 						<Stack className="pagination-config">

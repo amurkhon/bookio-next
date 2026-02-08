@@ -37,7 +37,8 @@ import PropertyCard from '../../libs/components/common/PropertyCard';
 import { PropertyCategory, PropertyType } from '../../libs/enums/property.enum';
 import Swal from "sweetalert2";
 import { addToCart } from '../../libs/utils/cart';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -265,6 +266,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		return (
 			<div id={'property-detail-page'}>
 				<div className={'container'}>
+					<ScrollReveal>
 					<Stack className={'property-detail-config'}>
 						<Stack className={'property-info-config'}>
 							<Stack className={'info'}>
@@ -698,6 +700,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 							</Stack>
 						)}
 					</Stack>
+					</ScrollReveal>
 				</div>
 			</div>
 		);

@@ -15,6 +15,7 @@ import { T } from '../../libs/types/common';
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Message } from '../../libs/enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -132,6 +133,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 		return (
 			<Stack className={'agent-list-page'}>
 				<Stack className={'container'}>
+					<ScrollReveal>
 					<Stack className={'filter'}>
 						<Box component={'div'} className={'left'}>
 							<input
@@ -205,6 +207,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 							</span>
 						)}
 					</Stack>
+					</ScrollReveal>
 				</Stack>
 			</Stack>
 		);

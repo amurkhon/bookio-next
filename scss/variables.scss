@@ -7,11 +7,13 @@ $font: 'Poppins', sans-serif;
 /* Theme Colors */
 :root {
 	--bg-primary: #ffffff;
-	--bg-secondary: #f5f5f5;
-	--text-primary: #212121;
-	--text-secondary: #616161;
-	--border-color: #e0e0e0;
+	--bg-secondary: #f0f4f8;
+	--text-primary: #1a1a2e;
+	--text-secondary: #555770;
+	--border-color: #e2e8f0;
 	--surface: #ffffff;
+	--accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	--section-glow: rgba(102, 126, 234, 0.06);
 	transition: background-color 0.3s ease, color 0.3s ease;
 }
 

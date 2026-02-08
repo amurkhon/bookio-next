@@ -17,6 +17,7 @@ import WriteArticle from '../../libs/components/mypage/WriteArticle';
 import MemberFollowers from '../../libs/components/member/MemberFollowers';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import MemberFollowings from '../../libs/components/member/MemberFollowings';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
@@ -127,6 +128,7 @@ const MyPage: NextPage = () => {
 		return (
 			<div id="my-page" style={{ position: 'relative' }}>
 				<div className="container">
+					<ScrollReveal>
 					<Stack className={'my-page'}>
 						<Stack className={'back-frame'}>
 							<Stack className={'left-config'}>
@@ -161,6 +163,7 @@ const MyPage: NextPage = () => {
 							</Stack>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</div>
 			</div>
 		);

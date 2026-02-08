@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
@@ -20,6 +21,7 @@ const TopAgents = (props: TopAgentsProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
 	const [topAuthors, setTopAuthors] = useState<Member[]>([]);
 
 	/** APOLLO REQUESTS **/
@@ -43,7 +45,7 @@ const TopAgents = (props: TopAgentsProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'top-agents'}>
+			<Stack ref={sectionRef} className={`top-agents ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<span>Top Authors</span>
@@ -70,7 +72,7 @@ const TopAgents = (props: TopAgentsProps) => {
 		);
 	} else {
 		return (
-			<Stack className={'top-agents'}>
+			<Stack ref={sectionRef} className={`top-agents ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>

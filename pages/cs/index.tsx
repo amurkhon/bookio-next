@@ -8,6 +8,7 @@ import NoticeMain from '../../libs/components/cs/NoticeMain';
 import Faq from '../../libs/components/cs/Faq';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Inquiry from '../../libs/components/cs/Inquiry';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -38,6 +39,7 @@ const CS: NextPage = () => {
 		return (
 			<Stack className={'cs-page'}>
 				<Stack className={'container'}>
+					<ScrollReveal>
 					<Box component={'div'} className={'cs-main-info'}>
 						<Box component={'div'} className={'info'}>
 							<p>We are ready to answer your questions!</p>
@@ -78,6 +80,7 @@ const CS: NextPage = () => {
 
 						{tab === 'inquiry' && <Inquiry />}
 					</Box>
+					</ScrollReveal>
 				</Stack>
 			</Stack>
 		);

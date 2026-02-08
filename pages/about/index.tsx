@@ -2,6 +2,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 import { Stack, Box } from '@mui/material';
 
 const About: NextPage = () => {
@@ -12,6 +13,7 @@ const About: NextPage = () => {
 	} else {
 		return (
 			<Stack className={'about-page'}>
+				<ScrollReveal>
 				<Stack className={'intro'}>
 					<Stack className={'container'}>
 						<Stack className={'left'}>
@@ -146,6 +148,7 @@ const About: NextPage = () => {
 						</Box>
 					</Stack>
 				</Stack>
+				</ScrollReveal>
 			</Stack>
 		);
 	}

@@ -6,6 +6,7 @@ import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/
 import { useRouter } from 'next/router';
 import { logIn, signUp } from '../../libs/auth';
 import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
+import ScrollReveal from '../../libs/components/common/ScrollReveal';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -64,6 +65,7 @@ const Join: NextPage = () => {
 		return (
 			<Stack className={'join-page'}>
 				<Stack className={'container'}>
+					<ScrollReveal>
 					<Stack className={'main'}>
 						<Stack className={'left'}>
 							{/* @ts-ignore */}
@@ -200,6 +202,7 @@ const Join: NextPage = () => {
 							</Box>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</Stack>
 			</Stack>
 		);
@@ -207,6 +210,7 @@ const Join: NextPage = () => {
 		return (
 			<Stack className={'join-page'}>
 				<Stack className={'container'}>
+					<ScrollReveal>
 					<Stack className={'main'}>
 						<Stack className={'left'}>
 							{/* @ts-ignore */}
@@ -343,6 +347,7 @@ const Join: NextPage = () => {
 							</Box>
 						</Stack>
 					</Stack>
+					</ScrollReveal>
 				</Stack>
 			</Stack>
 		);

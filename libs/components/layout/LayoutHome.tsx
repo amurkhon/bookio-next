@@ -3,8 +3,13 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Top from '../Top';
 import Footer from '../Footer';
-import { Button, Slide, Stack, useScrollTrigger } from '@mui/material';
+import { Box, Button, Slide, Stack, useScrollTrigger } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import StarIcon from '@mui/icons-material/Star';
+import PeopleIcon from '@mui/icons-material/People';
 import { userVar } from '../../../apollo/store';
 import { useReactiveVar } from '@apollo/client';
 import { getJwtToken, updateUserInfo } from '../../auth';
@@ -23,19 +28,12 @@ const withLayoutMain = (Component: any) => {
 		const router = useRouter();
 
 		interface Props {
-			/**
-			 * Injected by the documentation to work in an iframe.
-			 * You won't need it on your project.
-			 */
 			window?: () => Window;
 			children?: React.ReactElement<unknown>;
 		}
 
 		function HideOnScroll(props: Props) {
 			const { children, window } = props;
-			// Note that you normally won't need to set the window ref as useScrollTrigger
-			// will default to window.
-			// This is only being set here because the demo is in an iframe.
 			const trigger = useScrollTrigger({
 				target: window ? window() : undefined,
 			});
@@ -54,10 +52,13 @@ const withLayoutMain = (Component: any) => {
 		}, []);
 
 		/** HANDLERS **/
-
 		const pushHandler = async () => {
-        await router.push({pathname: '/books'});
-    };
+			await router.push({ pathname: '/books' });
+		};
+
+		const browseCategoriesHandler = async () => {
+			await router.push({ pathname: '/books' });
+		};
 
 		if (device == 'mobile') {
 			return (
@@ -92,18 +93,92 @@ const withLayoutMain = (Component: any) => {
 						<Stack id={'top'}>
 							<Top />
 						</Stack>
+
 						<Stack className={'header-main'}>
-							<span className='shape1' style={{position: "absolute",zIndex:"2", top: "100px", right: "25px"}}><img src='/img/shapes/hero-shape2.svg'/></span>
-						<span className='shape2' style={{position: "absolute",zIndex:"2", bottom: "0px", left: "10px"}}><img src='/img/shapes/hero-shape3.svg'/></span>
-							<Stack className={"container"}>
-								<Stack className={"header-left"}>
-									<Typography className={'unique'} variant={'h2'}>Up To 30% Off</Typography>
-									<Typography className={'left-letter'} variant={'h1'}>Get Your New Book</Typography>
-									<Typography className={'left-letter'} variant={'h1'}>With The Best Price</Typography>
-									<Button className={'header-button'} onClick={pushHandler} variant={'outlined'} endIcon={<ArrowForwardIcon />}> Shop Now </Button>
+							{/* Decorative background elements */}
+							<Box className="hero-orb hero-orb-1" />
+							<Box className="hero-orb hero-orb-2" />
+							<Box className="hero-orb hero-orb-3" />
+
+							<Stack className={'container'}>
+								<Stack className={'header-left'}>
+									{/* Offer badge */}
+									<Box className="hero-badge">
+										<LocalOfferIcon className="badge-icon" />
+										<span>Limited Time Offer</span>
+									</Box>
+
+									{/* Promo text */}
+									<Typography className={'unique'} variant={'h3'}>
+										Up To 30% Off
+									</Typography>
+
+									{/* Main heading */}
+									<Typography className={'hero-title'} variant={'h1'}>
+										Discover Your Next
+									</Typography>
+									<Typography className={'hero-title'} variant={'h1'}>
+										Great <span className="gradient-text">Read</span>
+									</Typography>
+
+									{/* Description */}
+									<Typography className={'hero-description'}>
+										Explore our curated collection of bestsellers, new releases, and hidden gems at unbeatable prices.
+									</Typography>
+
+									{/* CTA buttons */}
+									<Stack className="hero-cta" direction="row" spacing={2}>
+										<Button
+											className={'hero-button-primary'}
+											onClick={pushHandler}
+											variant={'contained'}
+											endIcon={<ArrowForwardIcon />}
+										>
+											Shop Now
+										</Button>
+										<Button
+											className={'hero-button-secondary'}
+											onClick={browseCategoriesHandler}
+											variant={'outlined'}
+											startIcon={<MenuBookIcon />}
+										>
+											Browse Categories
+										</Button>
+									</Stack>
+
+									{/* Trust stats */}
+									<Stack className="hero-stats" direction="row">
+										<Box className="stat-item">
+											<AutoStoriesIcon className="stat-icon" />
+											<Box className="stat-content">
+												<span className="stat-number">10K+</span>
+												<span className="stat-label">Books</span>
+											</Box>
+										</Box>
+										<Box className="stat-divider" />
+										<Box className="stat-item">
+											<PeopleIcon className="stat-icon" />
+											<Box className="stat-content">
+												<span className="stat-number">5K+</span>
+												<span className="stat-label">Happy Readers</span>
+											</Box>
+										</Box>
+										<Box className="stat-divider" />
+										<Box className="stat-item">
+											<StarIcon className="stat-icon" />
+											<Box className="stat-content">
+												<span className="stat-number">4.9</span>
+												<span className="stat-label">Rating</span>
+											</Box>
+										</Box>
+									</Stack>
 								</Stack>
-								<Stack className={"header-right"}>
-									<img src="/img/hero/hero-img-1-1.png" alt="" />
+
+								<Stack className={'header-right'}>
+									<Box className="hero-image-wrapper">
+										<img src="/img/hero/hero-img-1-1.png" alt="Featured books collection" />
+										<Box className="hero-image-glow" />
+									</Box>
 								</Stack>
 							</Stack>
 						</Stack>

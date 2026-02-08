@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import BlurOnIcon from '@mui/icons-material/BlurOn';
 import Typography from '@mui/joy/Typography';
 import { CssVarsProvider } from '@mui/joy/styles';
@@ -82,6 +83,7 @@ const FeedBackCard = ({ opinion }: FeedBackCardProps) => {
 const FeedBacks = () => {
 	const device = useDeviceDetect();
 	const [isClient, setIsClient] = useState(false);
+	const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.1 });
 
 	// Fix hydration mismatch - only enable dynamic features after mount
 	useEffect(() => {
@@ -91,7 +93,7 @@ const FeedBacks = () => {
 	// Don't render Swiper until client-side to avoid hydration issues
 	if (!isClient) {
 		return (
-			<Stack className={'client-feedback'}>
+			<Stack ref={sectionRef} className={`client-feedback ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Box className={'title'}>
 						Our Client's feedbacks
@@ -112,7 +114,7 @@ const FeedBacks = () => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'client-feedback'}>
+			<Stack ref={sectionRef} className={`client-feedback ${isVisible ? 'animate-in' : ''}`}>
 				<Stack className={'container'}>
 					<Box className={'title'}>
 						Our Client's feedbacks
@@ -142,7 +144,7 @@ const FeedBacks = () => {
 	}
 
 	return (
-		<Stack className={'client-feedback'}>
+		<Stack ref={sectionRef} className={`client-feedback ${isVisible ? 'animate-in' : ''}`}>
 			<Stack className={'container'}>
 				<Box className={'title'}>
 					Our Client's feedbacks

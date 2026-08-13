@@ -8,7 +8,10 @@ services:
       - 5000:4000
     environment:
      - PORT=4000
-
+     
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     volumes:
       - ./:/usr/src/bookio-next
     working_dir: /usr/src/bookio-next
